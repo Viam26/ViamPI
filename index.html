@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viam — Diagnóstico abierto asistido por IA · CREAJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14;
+    --bg-2:#0E141B;
+    --surface:#121A22;
+    --surface-2:#16212C;
+    --line:rgba(255,255,255,0.08);
+    --line-strong:#22303D;
+    --text:#E7ECF1;
+    --text-dim:#94A2B1;
+    --text-faint:#5C6B7A;
+    --pulse:#3CCBAE;       /* ViamPulse — auscultación */
+    --pulse-soft:rgba(60,203,174,0.12);
+    --vision:#6E8AF5;      /* ViamVision — ultrasonido */
+    --vision-soft:rgba(110,138,245,0.12);
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(720px 420px at 18% -5%, rgba(60,203,174,0.07), transparent 60%),
+      radial-gradient(680px 460px at 88% 8%, rgba(110,138,245,0.07), transparent 60%);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+  /* ---------- Tipografía utilitaria ---------- */
+  .mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--text-faint);
+  }
+  h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.05;letter-spacing:-0.02em}
+
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--pulse);outline-offset:3px;border-radius:4px}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:30;
+    backdrop-filter:blur(12px);
+    background:rgba(11,15,20,0.66);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:19px;letter-spacing:-0.01em}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--pulse);box-shadow:0 0 10px var(--pulse)}
+  .nav-links{display:flex;align-items:center;gap:26px}
+  .nav-links a{color:var(--text-dim);font-size:14.5px;transition:color .2s var(--ease)}
+  .nav-links a:hover{color:var(--text)}
+  .nav-tag{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;
+    color:var(--text-faint);border:1px solid var(--line-strong);
+    padding:5px 10px;border-radius:6px;text-transform:uppercase;
+  }
+  @media(max-width:640px){.nav-links a:not(.nav-tag){display:none}}
+
+  /* ---------- Hero ---------- */
+  header{position:relative;padding:96px 0 78px;overflow:hidden}
+  #wave{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.9}
+  .hero-fade{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(11,15,20,.35) 0%,rgba(11,15,20,0) 28%,rgba(11,15,20,0) 64%,var(--bg) 100%)}
+  .hero-in{position:relative;z-index:2;max-width:780px}
+  .hero-in .eyebrow{margin-bottom:22px}
+  .wordmark{font-size:clamp(58px,12vw,124px);font-weight:700;letter-spacing:-0.04em;line-height:.9}
+  .wordmark em{font-style:normal;color:var(--text-faint)}
+  .lede{font-size:clamp(17px,2.3vw,21px);color:var(--text-dim);max-width:560px;margin-top:24px}
+  .lede b{color:var(--text);font-weight:500}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;
+    color:var(--text-dim);background:var(--surface);
+    border:1px solid var(--line-strong);padding:7px 13px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .chip i{width:6px;height:6px;border-radius:50%;display:inline-block}
+  .chip .p{background:var(--pulse)} .chip .v{background:var(--vision)}
+
+  /* ---------- Proyectos (a pantalla completa) ---------- */
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:30px;flex-wrap:wrap}
+  .section-head h2{font-size:clamp(26px,4vw,38px)}
+  .section-head p{color:var(--text-dim);font-size:15px;max-width:360px}
+  #proyectos{padding:24px 0 0}
+
+  .features{display:flex;flex-direction:column}
+
+  .feature{
+    position:relative;display:flex;align-items:center;cursor:pointer;
+    min-height:82vh;padding:72px 0;overflow:hidden;
+    border-top:1px solid var(--line-strong);
+    transition:background-color .4s var(--ease);
+    color:var(--text);
+  }
+  .feature:last-child{border-bottom:1px solid var(--line-strong)}
+  .feature::before{
+    content:"";position:absolute;left:0;top:0;height:3px;width:100%;
+    background:linear-gradient(90deg,var(--accent),transparent 65%);
+    opacity:.65;transition:opacity .35s var(--ease);
+  }
+  .feature::after{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(820px 560px at 80% 50%, var(--accent-soft), transparent 62%);
+    opacity:.85;transition:opacity .4s var(--ease);
+  }
+  .feature.pulse{--accent:var(--pulse);--accent-soft:var(--pulse-soft)}
+  .feature.vision{--accent:var(--vision);--accent-soft:var(--vision-soft)}
+  .feature:hover{background-color:rgba(255,255,255,0.012)}
+  .feature:hover::before{opacity:1}
+  .feature:hover::after{opacity:1}
+
+  .feature-in{
+    position:relative;z-index:1;width:100%;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;
+  }
+  .feature-text{max-width:580px}
+  .feature .modality{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);background:var(--accent-soft);padding:6px 11px;border-radius:6px;
+    display:inline-block;margin-bottom:20px;
+  }
+  .feature-title{font-size:clamp(42px,7vw,78px);line-height:.94;margin-bottom:14px;letter-spacing:-0.03em}
+  .feature-tag{font-size:clamp(17px,2.4vw,22px);color:var(--text);font-weight:500;margin-bottom:16px}
+  .feature-desc{color:var(--text-dim);font-size:16px;margin-bottom:28px;max-width:520px}
+  .feature .specs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+  .feature .spec{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--text-dim);
+    border:1px solid var(--line);padding:5px 10px;border-radius:6px}
+  .feature-cta{
+    display:inline-flex;align-items:center;gap:11px;
+    font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:16px;color:var(--accent);
+  }
+  .feature-cta .arrow{transition:transform .25s var(--ease)}
+  .feature:hover .feature-cta .arrow{transform:translateX(6px)}
+
+  .feature-art{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
+  .art-svg{width:100%;max-width:440px;height:auto;filter:drop-shadow(0 0 18px var(--accent-soft))}
+  .art-svg .ecg{
+    stroke:var(--pulse);stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round;
+    filter:drop-shadow(0 0 8px var(--pulse));
+  }
+  .feature.pulse:hover .art-svg .ecg{animation:dash 2.4s var(--ease) forwards}
+  @keyframes dash{from{stroke-dasharray:1400;stroke-dashoffset:1400}to{stroke-dasharray:1400;stroke-dashoffset:0}}
+  .sonar circle{transform-origin:160px 160px}
+  .feature.vision .sonar .ring{animation:ping 3.2s var(--ease) infinite}
+  .feature.vision .sonar .ring.r2{animation-delay:.7s}
+  .feature.vision .sonar .ring.r3{animation-delay:1.4s}
+  @keyframes ping{0%{transform:scale(.35);opacity:.0}28%{opacity:.55}100%{transform:scale(1);opacity:0}}
+
+  @media(max-width:860px){
+    .feature{min-height:auto;padding:60px 0}
+    .feature-in{grid-template-columns:1fr;gap:34px}
+    .feature-art{order:-1;min-height:180px}
+    .art-svg{max-width:300px}
+  }
+
+  /* ---------- Footer ---------- */
+  footer{margin-top:96px;border-top:1px solid var(--line);padding:64px 0 50px;position:relative;z-index:1}
+  .foot-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px}
+  .foot-head h2{font-size:clamp(24px,3.5vw,32px);margin-bottom:8px}
+  .foot-head p{color:var(--text-dim);font-size:15px;max-width:440px}
+  .team-cta{
+    display:inline-flex;align-items:center;gap:10px;flex:none;
+    font-family:"IBM Plex Sans",sans-serif;font-size:14.5px;font-weight:500;
+    background:var(--surface);color:var(--text);border:1px solid var(--line-strong);
+    padding:11px 18px;border-radius:9px;transition:border-color .2s var(--ease),transform .2s var(--ease);
+  }
+  .team-cta svg{transition:transform .25s var(--ease)}
+  .team-cta:hover{border-color:var(--pulse);transform:translateY(-2px)}
+  .team-cta:hover svg{transform:translateX(4px)}
+  .team{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:760px){.team{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:420px){.team{grid-template-columns:1fr}}
+  .member{
+    display:flex;align-items:center;gap:13px;
+    background:var(--surface);border:1px solid var(--line-strong);
+    border-radius:13px;padding:16px;transition:border-color .25s var(--ease),transform .25s var(--ease);
+  }
+  .member:hover{border-color:var(--pulse);transform:translateY(-3px)}
+  .ig{flex:none;width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:var(--bg-2);border:1px solid var(--line-strong)}
+  .ig svg{stroke:var(--text-dim)}
+  .member:hover .ig svg{stroke:var(--pulse)}
+  .member .name{font-weight:500;font-size:14.5px;line-height:1.2}
+  .member .handle{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text-faint)}
+  .colophon{margin-top:46px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.03em}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand"><span class="dot"></span>Viam</div>
+    <div class="nav-links">
+      <a href="#proyectos">Proyectos</a>
+      <a href="equipo.html">Equipo</a>
+      <a class="nav-tag" href="#">CREAJ 2026</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <canvas id="wave"></canvas>
+  <div class="hero-fade"></div>
+  <div class="wrap hero-in">
+    <p class="eyebrow">Feria de proyectos · CREAJ</p>
+    <h1 class="wordmark">Viam<em>.</em></h1>
+    <p class="lede">Instrumentos de diagnóstico médico <b>de código abierto</b> y asistidos por <b>inteligencia artificial</b>. Dos proyectos que llevan la señal del cuerpo a la pantalla.</p>
+    <div class="hero-meta">
+      <span class="chip"><i class="p"></i>ViamPulse · estetoscopio adaptado con IA</span>
+      <span class="chip"><i class="v"></i>ViamVision · ecógrafo de ultrasonido con IA</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="proyectos">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Los proyectos</h2>
+      <p>Dos dispositivos, una misma idea: hacer el diagnóstico más accesible y abierto a todos.</p>
+    </div>
+  </div>
+
+  <div class="features">
+
+    <!-- ViamPulse — ocupa toda la pantalla, clickeable -->
+    <a class="feature pulse" href="viampulse.html" aria-label="Ver el proyecto ViamPulse">
+      <div class="wrap feature-in">
+        <div class="feature-text">
+          <span class="modality">Auscultación</span>
+          <h2 class="feature-title">ViamPulse</h2>
+          <p class="feature-tag">El corazón y los pulmones, con claridad digital.</p>
+          <p class="feature-desc">Un estetoscopio digital que captura el sonido cardíaco y respiratorio, lo amplifica y filtra el ruido del entorno. Un modelo de IA hecho y entrenado por nosotros, con más de 6 anomalías cardíacas identificadas, analiza la señal en tiempo real y resalta patrones que podrían pasar desapercibidos al oído.</p>
+          <div class="specs">
+            <span class="spec">Audio en tiempo real</span>
+            <span class="spec">Clasificación con IA</span>
+            <span class="spec">Fonocardiograma</span>
+          </div>
+          <span class="feature-cta">Ver proyecto
+            <svg class="arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="feature-art" aria-hidden="true">
+          <svg class="art-svg" viewBox="0 0 420 240" fill="none">
+            <path class="ecg" d="M0 140 H78 l9 -14 9 14 H126 l5 8 5 -92 6 110 6 -78 5 44 H236 l9 -14 9 14 H316 l5 8 5 -92 6 110 6 -78 5 44 H420"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- ViamVision — debajo, clickeable -->
+    <a class="feature vision" href="viamvision.html" aria-label="Ver el proyecto ViamVision">
+      <div class="wrap feature-in">
+        <div class="feature-text">
+          <span class="modality">Ultrasonido</span>
+          <h2 class="feature-title">ViamVision</h2>
+          <p class="feature-tag">Ecografía guiada por inteligencia artificial.</p>
+          <p class="feature-desc">Un ecógrafo que convierte los ecos de ultrasonido en imagen y usa IA para guiar el posicionamiento de la sonda y resaltar estructuras anatómicas, haciendo el estudio más sencillo de realizar e interpretar.</p>
+          <div class="specs">
+            <span class="spec">Reconstrucción de imagen</span>
+            <span class="spec">Guía de sonda con IA</span>
+            <span class="spec">Captura de estudios</span>
+          </div>
+          <span class="feature-cta">Ver proyecto
+            <svg class="arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="feature-art" aria-hidden="true">
+          <svg class="art-svg" viewBox="0 0 320 320" fill="none">
+            <g class="sonar" stroke="var(--vision)" fill="none" stroke-width="2">
+              <circle class="ring r1" cx="160" cy="160" r="150" opacity="0"/>
+              <circle class="ring r2" cx="160" cy="160" r="150" opacity="0"/>
+              <circle class="ring r3" cx="160" cy="160" r="150" opacity="0"/>
+              <circle cx="160" cy="160" r="40" opacity=".85"/>
+              <circle cx="160" cy="160" r="80" opacity=".5"/>
+              <circle cx="160" cy="160" r="120" opacity=".28"/>
+              <circle cx="160" cy="160" r="7" fill="var(--vision)" stroke="none"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+</main>
+
+<!-- ===== Footer / Equipo (resumen) ===== -->
+<footer id="equipo">
+  <div class="wrap">
+    <div class="foot-head">
+      <div>
+        <p class="eyebrow" style="margin-bottom:14px">El equipo</p>
+        <h2>Las personas detrás de Viam</h2>
+        <p>Cuatro integrantes creativos y dedicados para CREAJ.</p>
+      </div>
+      <a class="team-cta" href="equipo.html">Conoce al equipo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="team">
+      <!-- ▼▼ Reemplaza nombres y usuarios de Instagram ▼▼ -->
+      <a class="member" href="https://instagram.com/7caleh" target="_blank" rel="noopener">
+        <span class="ig"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+        <span><span class="name">Caleb</span><br><span class="handle">@7caleh</span></span>
+      </a>
+      <a class="member" href="https://instagram.com/jesvhv" target="_blank" rel="noopener">
+        <span class="ig"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+        <span><span class="name">Jesús</span><br><span class="handle">@jesvhv</span></span>
+      </a>
+      <a class="member" href="https://instagram.com/ycastaneda07" target="_blank" rel="noopener">
+        <span class="ig"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+        <span><span class="name">Castaneda</span><br><span class="handle">@ycastaneda07</span></span>
+      </a>
+      <a class="member" href="https://instagram.com/zcar093" target="_blank" rel="noopener">
+        <span class="ig"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+        <span><span class="name">Zuleta</span><br><span class="handle">@zcar093</span></span>
+      </a>
+    </div>
+
+    <div class="colophon">
+      <span>© 2026 Viam · CREAJ</span>
+      <span>Hardware y software de código abierto</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- Onda ECG del hero ---------- */
+(function(){
+  const canvas = document.getElementById('wave');
+  const ctx = canvas.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, dpr;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.clientWidth; h = canvas.clientHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  // Forma de un latido (p en [0,1]) -> amplitud (positiva = arriba)
+  function beat(p){
+    let y = 0;
+    y += 0.10*Math.exp(-Math.pow((p-0.16)/0.028,2));   // onda P
+    y -= 0.07*Math.exp(-Math.pow((p-0.36)/0.012,2));   // Q
+    y += 0.62*Math.exp(-Math.pow((p-0.40)/0.011,2));   // R
+    y -= 0.16*Math.exp(-Math.pow((p-0.44)/0.014,2));   // S
+    y += 0.17*Math.exp(-Math.pow((p-0.66)/0.045,2));   // onda T
+    return y;
+  }
+
+  function trace(offset, color, amp, lineW, alpha, beatW){
+    ctx.beginPath();
+    const base = h*0.56;
+    for(let x=0; x<=w; x+=2){
+      const p = (((x+offset)%beatW)/beatW);
+      const y = base - beat(p)*amp;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = alpha;
+    ctx.lineWidth = lineW;
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.shadowColor = color; ctx.shadowBlur = 12;
+    ctx.stroke();
+    ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+  }
+
+  // Onda de eco (seno suave) para ViamVision
+  function echo(offset, color, alpha){
+    ctx.beginPath();
+    const base = h*0.74;
+    for(let x=0; x<=w; x+=4){
+      const y = base + Math.sin((x+offset)*0.012)*10 + Math.sin((x+offset)*0.05)*3;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = color; ctx.globalAlpha = alpha;
+    ctx.lineWidth = 1.5; ctx.stroke(); ctx.globalAlpha = 1;
+  }
+
+  let off = 0;
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const beatW = Math.max(220, w*0.26);
+    echo(off*0.5, 'rgba(110,138,245,0.5)', 0.5);
+    trace(off, 'rgba(60,203,174,0.85)', h*0.30, 2.2, 0.9, beatW);
+    off += 1.1;
+    if(!reduce) requestAnimationFrame(draw);
+  }
+
+  function start(){ resize(); if(reduce){ off = 0; draw(); } else { draw(); } }
+  window.addEventListener('resize', resize);
+  start();
+})();
+</script>
+</body>
+</html>
