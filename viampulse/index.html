@@ -109,6 +109,44 @@
   .colophon{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--text-faint);
     font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.03em}
 
+  /* Imagen real del producto en el hero */
+  .product-img{width:100%;max-width:460px;height:auto;
+    filter:drop-shadow(0 22px 44px rgba(0,0,0,.55)) drop-shadow(0 0 34px var(--accent-soft));
+    animation:floaty 6.5s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+
+  /* Botón de descarga de la app */
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .btn-dl{display:inline-flex;align-items:center;gap:11px;
+    background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;
+    font-family:"Space Grotesk",sans-serif;padding:13px 20px;border-radius:11px;
+    transition:filter .2s,transform .2s var(--ease)}
+  .btn-dl:hover{filter:brightness(1.08);transform:translateY(-2px)}
+  .btn-dl .sz{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:500;
+    opacity:.75;padding-left:9px;margin-left:3px;border-left:1px solid rgba(8,17,14,.35)}
+  .dl-card .oss{color:var(--text-dim)}
+  .gh.secondary{background:transparent;color:var(--text);border:1px solid var(--line-strong)}
+  .gh.secondary:hover{filter:none;border-color:var(--accent)}
+
+  /* Cotización / materiales */
+  .quote{border:1px solid var(--line-strong);border-radius:14px;overflow:hidden;background:var(--surface)}
+  .q-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
+    padding:14px 18px;border-bottom:1px solid var(--line)}
+  .q-row:last-of-type{border-bottom:none}
+  .q-name{font-size:15px;color:var(--text);line-height:1.35}
+  .q-name .qty{color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:12px}
+  .q-link{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;color:var(--accent);margin-top:4px}
+  .q-link:hover{text-decoration:underline}
+  .q-link.none{color:var(--text-faint)}
+  .q-price{font-family:"IBM Plex Mono",monospace;font-size:14.5px;color:var(--text);white-space:nowrap}
+  .q-total{display:grid;grid-template-columns:1fr auto;align-items:center;
+    padding:16px 18px;background:var(--surface-2);border-top:1px solid var(--line-strong)}
+  .q-total .lbl{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--text-faint)}
+  .q-total .val{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:21px;color:var(--accent)}
+  .q-note{font-size:12.5px;color:var(--text-faint);margin-top:11px}
+
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -134,11 +172,17 @@
       <h1 class="ptitle">ViamPulse</h1>
       <p class="ptag">El corazón y los pulmones, con claridad digital.</p>
       <p class="plede">Un estetoscopio digital que captura el sonido cardíaco y respiratorio, lo amplifica y filtra el ruido del entorno. Un modelo de IA hecho y entrenado por nosotros analiza la señal en tiempo real y resalta patrones que podrían pasar desapercibidos al oído.</p>
+      <div class="hero-actions">
+        <!-- ▼▼ Pega aquí el enlace directo del APK (ver nota al final del archivo) ▼▼ -->
+        <a class="btn-dl" href="REEMPLAZA_CON_URL_DEL_APK" download="ViamPulse.apk">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          Descargar aplicación
+          <span class="sz">APK · 104 MB</span>
+        </a>
+      </div>
     </div>
-    <div class="phead-art" aria-hidden="true">
-      <svg class="art-svg" viewBox="0 0 420 240" fill="none">
-        <path class="ecg" d="M0 140 H78 l9 -14 9 14 H126 l5 8 5 -92 6 110 6 -78 5 44 H236 l9 -14 9 14 H316 l5 8 5 -92 6 110 6 -78 5 44 H420"/>
-      </svg>
+    <div class="phead-art">
+      <img class="product-img" src="estetoscopio.png" alt="Prototipo del estetoscopio digital ViamPulse" width="460" height="437">
     </div>
   </div>
 </section>
@@ -172,6 +216,13 @@
         </div>
       </div>
 
+      <div class="block" id="cotizacion">
+        <p class="m-sub">Cotización · materiales</p>
+        <h2>¿Cuánto cuesta construirlo?</h2>
+        <p class="prose" style="margin-bottom:22px">Componentes usados en el proyecto, con su precio aproximado y dónde comprarlos.</p>
+        <div class="quote" id="quote"><!-- se genera con el script de abajo --></div>
+      </div>
+
       <div class="switch">
         <!-- Enlace al otro proyecto -->
         <a href="../viamvision/">
@@ -193,10 +244,19 @@
         <div class="kv"><span>Anomalías</span><span>6+ identificadas</span></div>
         <div class="kv"><span>Licencia</span><span>Código abierto</span></div>
       </div>
+      <div class="repo dl-card">
+        <span class="oss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>App para Android · APK</span>
+        <!-- ▼▼ Mismo enlace del APK que en el hero ▼▼ -->
+        <a class="gh dl" href="REEMPLAZA_CON_URL_DEL_APK" download="ViamPulse.apk">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          Descargar aplicación
+        </a>
+        <p class="q-note" style="margin-top:12px">Android 8.0+ · 104 MB. Activa “instalar apps de orígenes desconocidos” para instalar el APK.</p>
+      </div>
       <div class="repo">
         <span class="oss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M7 11V7a5 5 0 0 1 10 0v4M5 11h14v9H5z"/></svg>Repositorio público en GitHub</span>
         <!-- ▼▼ Reemplaza esta URL por el repo real de ViamPulse ▼▼ -->
-        <a class="gh" href="https://github.com/Viam26/Estetoscopio" target="_blank" rel="noopener">
+        <a class="gh secondary" href="https://github.com/Viam26/Estetoscopio" target="_blank" rel="noopener">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
           Ver el código
         </a>
@@ -211,5 +271,44 @@
     <span>Hardware y software de código abierto</span>
   </div>
 </footer>
+<script>
+/* =========================================================
+   COTIZACIÓN — EDITA AQUÍ LOS PRODUCTOS
+   Para añadir un producto, copia una línea y cambia los datos.
+   - nombre : texto del componente
+   - precio : número en dólares (USD). Ej: 12.50
+   - cantidad : opcional (por defecto 1)
+   - enlace : URL de la tienda que lo vende (deja "" si no hay)
+   ========================================================= */
+const PRODUCTOS = [
+  { nombre:"Estetoscopio genérico",          precio:8.00,  cantidad:1, enlace:"" },
+  { nombre:"Raspberry Pi Pico",              precio:6.50,  cantidad:1, enlace:"" },
+  { nombre:"Micrófono / sensor de sonido",   precio:4.00,  cantidad:1, enlace:"" },
+  { nombre:"Cables y componentes varios",    precio:3.00,  cantidad:1, enlace:"" },
+];
+const MONEDA = "$";   // símbolo de moneda
+
+(function renderCotizacion(){
+  const cont = document.getElementById("quote");
+  if(!cont) return;
+  const fmt = n => MONEDA + n.toFixed(2);
+  let total = 0, html = "";
+  PRODUCTOS.forEach(p => {
+    const qty = p.cantidad || 1;
+    const sub = p.precio * qty;
+    total += sub;
+    const link = p.enlace
+      ? `<a class="q-link" href="${p.enlace}" target="_blank" rel="noopener">Ver en tienda
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></a>`
+      : `<span class="q-link none">Sin enlace</span>`;
+    html += `<div class="q-row">
+      <div><div class="q-name">${p.nombre}${qty>1?` <span class="qty">×${qty}</span>`:""}</div>${link}</div>
+      <div class="q-price">${fmt(sub)}</div>
+    </div>`;
+  });
+  html += `<div class="q-total"><span class="lbl">Subtotal</span><span class="val">${fmt(total)}</span></div>`;
+  cont.innerHTML = html;
+})();
+</script>
 </body>
 </html>

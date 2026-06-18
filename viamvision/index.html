@@ -108,6 +108,25 @@
   .colophon{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--text-faint);
     font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.03em}
 
+  /* Cotización / materiales */
+  .quote{border:1px solid var(--line-strong);border-radius:14px;overflow:hidden;background:var(--surface)}
+  .q-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
+    padding:14px 18px;border-bottom:1px solid var(--line)}
+  .q-row:last-of-type{border-bottom:none}
+  .q-name{font-size:15px;color:var(--text);line-height:1.35}
+  .q-name .qty{color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:12px}
+  .q-link{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;color:var(--accent);margin-top:4px}
+  .q-link:hover{text-decoration:underline}
+  .q-link.none{color:var(--text-faint)}
+  .q-price{font-family:"IBM Plex Mono",monospace;font-size:14.5px;color:var(--text);white-space:nowrap}
+  .q-total{display:grid;grid-template-columns:1fr auto;align-items:center;
+    padding:16px 18px;background:var(--surface-2);border-top:1px solid var(--line-strong)}
+  .q-total .lbl{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--text-faint)}
+  .q-total .val{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:21px;color:var(--accent)}
+  .q-note{font-size:12.5px;color:var(--text-faint);margin-top:11px}
+
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -179,6 +198,13 @@
         </div>
       </div>
 
+      <div class="block" id="cotizacion">
+        <p class="m-sub">Cotización · materiales</p>
+        <h2>¿Cuánto cuesta construirlo?</h2>
+        <p class="prose" style="margin-bottom:22px">Componentes usados en el proyecto, con su precio aproximado y dónde comprarlos.</p>
+        <div class="quote" id="quote"><!-- se genera con el script de abajo --></div>
+      </div>
+
       <div class="switch">
         <a href="../viampulse/">
           <div>
@@ -217,5 +243,43 @@
     <span>Hardware y software de código abierto</span>
   </div>
 </footer>
+<script>
+/* =========================================================
+   COTIZACIÓN — EDITA AQUÍ LOS PRODUCTOS
+   Para añadir un producto, copia una línea y cambia los datos.
+   - nombre : texto del componente
+   - precio : número en dólares (USD). Ej: 12.50
+   - cantidad : opcional (por defecto 1)
+   - enlace : URL de la tienda que lo vende (deja "" si no hay)
+   ========================================================= */
+const PRODUCTOS = [
+  { nombre:"Placa electrónica / transductor", precio:25.00, cantidad:1, enlace:"" },
+  { nombre:"Sonda de ultrasonido",            precio:40.00, cantidad:1, enlace:"" },
+  { nombre:"Cables y componentes varios",     precio:8.00,  cantidad:1, enlace:"" },
+];
+const MONEDA = "$";   // símbolo de moneda
+
+(function renderCotizacion(){
+  const cont = document.getElementById("quote");
+  if(!cont) return;
+  const fmt = n => MONEDA + n.toFixed(2);
+  let total = 0, html = "";
+  PRODUCTOS.forEach(p => {
+    const qty = p.cantidad || 1;
+    const sub = p.precio * qty;
+    total += sub;
+    const link = p.enlace
+      ? `<a class="q-link" href="${p.enlace}" target="_blank" rel="noopener">Ver en tienda
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17 17 7M9 7h8v8"/></svg></a>`
+      : `<span class="q-link none">Sin enlace</span>`;
+    html += `<div class="q-row">
+      <div><div class="q-name">${p.nombre}${qty>1?` <span class="qty">×${qty}</span>`:""}</div>${link}</div>
+      <div class="q-price">${fmt(sub)}</div>
+    </div>`;
+  });
+  html += `<div class="q-total"><span class="lbl">Subtotal</span><span class="val">${fmt(total)}</span></div>`;
+  cont.innerHTML = html;
+})();
+</script>
 </body>
 </html>
