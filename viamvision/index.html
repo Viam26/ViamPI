@@ -94,6 +94,33 @@
     background:var(--accent);color:var(--on-accent);font-weight:500;font-size:14.5px;
     padding:12px 17px;border-radius:10px;transition:filter .2s}
   .gh:hover{filter:brightness(1.08)}
+  .gh.secondary{background:transparent;color:var(--text);border:1px solid var(--line-strong)}
+  .gh.secondary:hover{filter:none;border-color:var(--accent)}
+
+  /* Botón de descarga de la app */
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .btn-dl{display:inline-flex;align-items:center;gap:11px;
+    background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;
+    font-family:"Space Grotesk",sans-serif;padding:13px 20px;border-radius:11px;
+    transition:filter .2s,transform .2s var(--ease)}
+  .btn-dl:hover{filter:brightness(1.08);transform:translateY(-2px)}
+  .btn-dl .sz{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:500;
+    opacity:.75;padding-left:9px;margin-left:3px;border-left:1px solid rgba(10,16,36,.35)}
+  .dl-card .oss{color:var(--text-dim)}
+
+  /* Tarjeta de reconocimiento */
+  .credit-card{display:flex;gap:20px;align-items:flex-start;margin-top:8px}
+  @media(max-width:560px){.credit-card{flex-direction:column;align-items:center;text-align:center}}
+  .credit-avatar{position:relative;flex:none;width:96px;height:96px;border-radius:50%;overflow:hidden;
+    background:linear-gradient(160deg,var(--accent),var(--surface-2));
+    display:flex;align-items:center;justify-content:center;border:1px solid var(--line-strong)}
+  .credit-initials{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:26px;color:var(--on-accent)}
+  .credit-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .credit-name{font-size:19px;margin-bottom:2px}
+  .credit-alias{color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:400}
+  .credit-role{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:10px}
+  .credit-gh{width:auto;display:inline-flex;margin-top:14px;padding:10px 16px}
 
   .switch{margin-top:30px;border-top:1px solid var(--line);padding-top:30px}
   .switch a{display:flex;align-items:center;justify-content:space-between;gap:18px;
@@ -151,7 +178,15 @@
       <span class="modality">Ultrasonido · ecógrafo con IA</span>
       <h1 class="ptitle">ViamVision</h1>
       <p class="ptag">Ecografía guiada por inteligencia artificial.</p>
-      <p class="plede">ViamVision recibe los ecos del ultrasonido y los reconstruye en una imagen. La IA acompaña el estudio: guía dónde colocar la sonda, resalta e identifica las estructuras anatómicas, para que la ecografía sea más fácil de hacer y de interpretar.</p>
+      <p class="plede">ViamVision recibe los ecos del ultrasonido y los reconstruye en una imagen. La IA acompaña el estudio: guía dónde colocar la sonda, resalta e identifica las estructuras anatómicas, para que la ecografía sea más fácil de hacer y de interpretar, y por último guarda cada analisis por fechas.</p>
+      <div class="hero-actions">
+        <!-- ▼▼ Pega aquí el enlace directo del APK de ViamVision (mismo formato que en ViamPulse) ▼▼ -->
+        <a class="btn-dl" href="https://github.com/Viam26/Ultrasonografia/releases/download/ViamVision/Viam.Vision.v1.zip" download="ViamVision.apk">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          Descargar aplicación
+          <span class="sz">APK · 8 MB</span>
+        </a>
+      </div>
     </div>
     <div class="phead-art" aria-hidden="true">
       <svg class="art-svg" viewBox="0 0 320 320" fill="none">
@@ -198,6 +233,27 @@
         </div>
       </div>
 
+      <div class="block">
+        <p class="m-sub">Reconocimiento</p>
+        <h2>Construido sobre trabajo abierto</h2>
+        <div class="credit-card">
+          <div class="credit-avatar">
+            <span class="credit-initials">LJ</span>
+            <!-- ▼▼ Coloca aquí una foto de Luc Jonveaux (kelu124.jpg) junto a este archivo html ▼▼ -->
+            <img class="credit-photo" src="kelu124.jpg" alt="Foto de Luc Jonveaux (Kelu124)" onerror="this.style.display='none'">
+          </div>
+          <div>
+            <h3 class="credit-name">Luc Jonveaux <span class="credit-alias">— Kelu124</span></h3>
+            <p class="credit-role">Creador del Pic0rick</p>
+            <p class="prose">La placa electrónica principal de ViamVision es la <b>Pic0rick</b>, un sistema de adquisición de pulso-eco para ultrasonido basado en RP2040, diseñado y publicado como hardware de código abierto por Luc Jonveaux (Kelu124). Su trabajo hizo posible construir un ecógrafo funcional con componentes accesibles, y este proyecto no existiría sin esa base <b>On t´aime Kelu</b>.</p>
+            <a class="gh secondary credit-gh" href="https://github.com/kelu124" target="_blank" rel="noopener">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+              Ver repositorio del Kelu124
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div class="block" id="cotizacion">
         <p class="m-sub">Cotización · materiales</p>
         <h2>¿Cuánto cuesta construirlo?</h2>
@@ -224,6 +280,15 @@
         <div class="kv"><span>IA</span><span>Visión por computadora</span></div>
         <div class="kv"><span>Asistencia</span><span>Guía de sonda</span></div>
         <div class="kv"><span>Licencia</span><span>Código abierto</span></div>
+      </div>
+      <div class="repo dl-card">
+        <span class="oss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>App para Android · APK</span>
+        <!-- ▼▼ Mismo enlace del APK que en el hero ▼▼ -->
+        <a class="gh dl" href="https://github.com/Viam26/ViamPI/releases/download/ViamVision/ViamVision.apk" download="ViamVision.apk">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          Descargar aplicación
+        </a>
+        <p class="q-note" style="margin-top:12px">Activa "instalar apps de orígenes desconocidos" para instalar el APK.</p>
       </div>
       <div class="repo">
         <span class="oss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M7 11V7a5 5 0 0 1 10 0v4M5 11h14v9H5z"/></svg>Repositorio público en GitHub</span>
@@ -253,9 +318,11 @@
    - enlace : URL de la tienda que lo vende (deja "" si no hay)
    ========================================================= */
 const PRODUCTOS = [
-  { nombre:"Placa electrónica / transductor", precio:25.00, cantidad:1, enlace:"" },
-  { nombre:"Sonda de ultrasonido",            precio:40.00, cantidad:1, enlace:"" },
-  { nombre:"Cables y componentes varios",     precio:8.00,  cantidad:1, enlace:"" },
+  { nombre:"Cables BNC", precio:9.99, cantidad:1, enlace:"https://www.amazon.com/dp/B0CXHR48R7?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1" },
+  { nombre:"Adaptadores SMA",            precio:6.99, cantidad:1, enlace:"https://www.amazon.com/dp/B07WCK2RNC?ref=ppx_yo2ov_dt_b_fed_asin_title" },
+  { nombre:"Raspberry Pi Pico",     precio:11.19,  cantidad:1, enlace:"https://www.amazon.com/dp/B08TVF499B?ref=ppx_yo2ov_dt_b_fed_asin_title" },
+  { nombre:"Transductor Yushi 5MHz",     precio:66.00,  cantidad:1, enlace:"https://www.amazon.com/dp/B0F59ZZ69D?ref=ppx_yo2ov_dt_b_fed_asin_title" },
+  { nombre:"Placa Pic0rick",     precio:299.00,  cantidad:1, enlace:"https://www.tindie.com/products/kelu124/pic0rick-a-pico-ultrasound-pulse-echo-system/" },
 ];
 const MONEDA = "$";   // símbolo de moneda
 
