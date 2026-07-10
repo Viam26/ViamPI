@@ -6,163 +6,14 @@
 <title>ViamVision — Ecógrafo con IA · Viam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
   /* Aplica el tema guardado antes de pintar para evitar el parpadeo */
   (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
-<style>
-  :root{
-    --bg:#0B0F14; --bg-2:#0E141B; --surface:#121A22; --surface-2:#16212C;
-    --line:rgba(255,255,255,0.08); --line-strong:#22303D;
-    --text:#E7ECF1; --text-dim:#94A2B1; --text-faint:#5C6B7A;
-    --pulse:#3CCBAE; --pulse-soft:rgba(60,203,174,0.12);
-    --vision:#6E8AF5; --vision-soft:rgba(110,138,245,0.12);
-    --maxw:1180px; --ease:cubic-bezier(.22,.61,.36,1);
-    --accent:var(--vision); --accent-soft:var(--vision-soft); --on-accent:#0A1024;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif;
-    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:radial-gradient(760px 460px at 16% -6%, var(--accent-soft), transparent 60%)}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1}
-  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-faint)}
-  h1,h2,h3{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.05;letter-spacing:-0.02em}
-  a{color:inherit;text-decoration:none}
-  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-
-  /* Nav */
-  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);
-    background:rgba(11,15,20,0.66);border-bottom:1px solid var(--line)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:19px}
-  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
-  .back{display:inline-flex;align-items:center;gap:9px;color:var(--text-dim);font-size:14.5px;transition:color .2s var(--ease)}
-  .back svg{transition:transform .25s var(--ease)}
-  .back:hover{color:var(--text)} .back:hover svg{transform:translateX(-4px)}
-  .nav-tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;color:var(--text-faint);
-    border:1px solid var(--line-strong);padding:5px 10px;border-radius:6px;text-transform:uppercase}
-  .nav-right{display:flex;align-items:center;gap:22px}
-  @media(max-width:560px){.nav-tag{display:none}}
-
-  /* Hero del proyecto */
-  .phead{position:relative;padding:84px 0 56px;overflow:hidden;border-bottom:1px solid var(--line)}
-  .phead::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-    background:radial-gradient(720px 420px at 82% 30%, var(--accent-soft), transparent 60%)}
-  .phead-in{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-  .modality{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--accent);background:var(--accent-soft);padding:6px 11px;border-radius:6px;display:inline-block;margin-bottom:20px}
-  .ptitle{font-size:clamp(46px,9vw,92px);line-height:.92;letter-spacing:-0.04em;margin-bottom:14px}
-  .ptag{font-size:clamp(18px,2.6vw,24px);color:var(--text);font-weight:500;margin-bottom:18px}
-  .plede{color:var(--text-dim);font-size:16px;max-width:520px}
-  .phead-art{position:relative;display:flex;align-items:center;justify-content:center;min-height:240px}
-  .art-svg{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 0 18px var(--accent-soft))}
-  .sonar circle{transform-origin:160px 160px}
-  .sonar .ring{animation:ping 3.2s var(--ease) infinite}
-  .sonar .ring.r2{animation-delay:.7s} .sonar .ring.r3{animation-delay:1.4s}
-  @keyframes ping{0%{transform:scale(.35);opacity:0}28%{opacity:.55}100%{transform:scale(1);opacity:0}}
-  @media(max-width:860px){.phead-in{grid-template-columns:1fr;gap:30px}.phead-art{order:-1;min-height:160px}.art-svg{max-width:240px}}
-
-  /* Cuerpo */
-  main{padding:64px 0 30px}
-  .layout{display:grid;grid-template-columns:1.4fr .9fr;gap:54px;align-items:start}
-  @media(max-width:860px){.layout{grid-template-columns:1fr;gap:40px}}
-  .block{margin-bottom:46px}
-  .m-sub{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-faint);margin-bottom:16px}
-  .block h2{font-size:clamp(22px,3vw,30px);margin-bottom:14px}
-  .prose{color:var(--text-dim);font-size:16px;max-width:620px}
-  .prose b{color:var(--text);font-weight:500}
-
-  .feat{list-style:none;display:grid;gap:14px;margin-top:8px}
-  .feat li{display:flex;gap:13px;align-items:flex-start;color:var(--text-dim);font-size:15.5px}
-  .feat li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;margin-top:9px;
-    background:var(--accent);box-shadow:0 0 8px var(--accent)}
-  .feat li b{color:var(--text);font-weight:500}
-
-  .specs{display:flex;flex-wrap:wrap;gap:8px}
-  .spec{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--text-dim);
-    border:1px solid var(--line);padding:6px 11px;border-radius:6px}
-
-  .aside{position:sticky;top:88px;display:grid;gap:16px}
-  .panel{background:var(--surface);border:1px solid var(--line-strong);border-radius:16px;padding:22px}
-  .panel h3{font-size:17px;margin-bottom:14px}
-  .kv{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
-  .kv:last-child{border-bottom:none}
-  .kv span:first-child{color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em}
-  .kv span:last-child{color:var(--text);text-align:right}
-  .repo{background:var(--surface);border:1px solid var(--line-strong);border-radius:16px;padding:22px}
-  .oss{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--text-dim);display:flex;align-items:center;gap:9px;margin-bottom:16px}
-  .gh{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;
-    background:var(--accent);color:var(--on-accent);font-weight:500;font-size:14.5px;
-    padding:12px 17px;border-radius:10px;transition:filter .2s}
-  .gh:hover{filter:brightness(1.08)}
-  .gh.secondary{background:transparent;color:var(--text);border:1px solid var(--line-strong)}
-  .gh.secondary:hover{filter:none;border-color:var(--accent)}
-
-  /* Botón de descarga de la app */
-  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
-  .btn-dl{display:inline-flex;align-items:center;gap:11px;
-    background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;
-    font-family:"Space Grotesk",sans-serif;padding:13px 20px;border-radius:11px;
-    transition:filter .2s,transform .2s var(--ease)}
-  .btn-dl:hover{filter:brightness(1.08);transform:translateY(-2px)}
-  .btn-dl .sz{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:500;
-    opacity:.75;padding-left:9px;margin-left:3px;border-left:1px solid rgba(10,16,36,.35)}
-  .dl-card .oss{color:var(--text-dim)}
-
-  /* Tarjeta de reconocimiento */
-  .credit-card{display:flex;gap:20px;align-items:flex-start;margin-top:8px}
-  @media(max-width:560px){.credit-card{flex-direction:column;align-items:center;text-align:center}}
-  .credit-avatar{position:relative;flex:none;width:96px;height:96px;border-radius:50%;overflow:hidden;
-    background:linear-gradient(160deg,var(--accent),var(--surface-2));
-    display:flex;align-items:center;justify-content:center;border:1px solid var(--line-strong)}
-  .credit-initials{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:26px;color:var(--on-accent)}
-  .credit-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .credit-name{font-size:19px;margin-bottom:2px}
-  .credit-alias{color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:400}
-  .credit-role{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--accent);margin-bottom:10px}
-  .credit-gh{width:auto;display:inline-flex;margin-top:14px;padding:10px 16px}
-
-  .switch{margin-top:30px;border-top:1px solid var(--line);padding-top:30px}
-  .switch a{display:flex;align-items:center;justify-content:space-between;gap:18px;
-    background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;padding:20px 22px;
-    transition:border-color .25s var(--ease),transform .25s var(--ease)}
-  .switch a:hover{border-color:var(--pulse);transform:translateY(-3px)}
-  .switch .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-faint)}
-  .switch .nm{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:20px;color:var(--text);margin-top:4px}
-  .switch .arrow{flex:none;color:var(--pulse)}
-
-  footer{margin-top:70px;border-top:1px solid var(--line);padding:30px 0;position:relative;z-index:1}
-  .colophon{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:var(--text-faint);
-    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.03em}
-
-  /* Cotización / materiales */
-  .quote{border:1px solid var(--line-strong);border-radius:14px;overflow:hidden;background:var(--surface)}
-  .q-row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
-    padding:14px 18px;border-bottom:1px solid var(--line)}
-  .q-row:last-of-type{border-bottom:none}
-  .q-name{font-size:15px;color:var(--text);line-height:1.35}
-  .q-name .qty{color:var(--text-faint);font-family:"IBM Plex Mono",monospace;font-size:12px}
-  .q-link{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;
-    font-size:11.5px;color:var(--accent);margin-top:4px}
-  .q-link:hover{text-decoration:underline}
-  .q-link.none{color:var(--text-faint)}
-  .q-price{font-family:"IBM Plex Mono",monospace;font-size:14.5px;color:var(--text);white-space:nowrap}
-  .q-total{display:grid;grid-template-columns:1fr auto;align-items:center;
-    padding:16px 18px;background:var(--surface-2);border-top:1px solid var(--line-strong)}
-  .q-total .lbl{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--text-faint)}
-  .q-total .val{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:21px;color:var(--accent)}
-  .q-note{font-size:12.5px;color:var(--text-faint);margin-top:11px}
-
-  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-</style>
-<link rel="stylesheet" href="../theme.css">
+<link rel="stylesheet" href="../site.css">
 </head>
-<body>
+<body class="proj-vision">
 
 <nav>
   <div class="wrap nav-in">
@@ -171,7 +22,7 @@
       Volver
     </a>
     <div class="nav-right">
-      <div class="brand"><span class="dot"></span>Viam</div>
+      <a class="brand" href="../"><span class="dot"></span>Viam</a>
       <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
         <span class="tt-track">
           <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -359,6 +210,6 @@ const MONEDA = "$";   // símbolo de moneda
   cont.innerHTML = html;
 })();
 </script>
-<script src="../theme.js"></script>
+<script src="../site.js"></script>
 </body>
 </html>
