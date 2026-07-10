@@ -7,6 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  /* Aplica el tema guardado antes de pintar para evitar el parpadeo */
+  (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 <style>
   :root{
     --bg:#0B0F14; --bg-2:#0E141B; --surface:#121A22; --surface-2:#16212C;
@@ -149,6 +153,7 @@
 
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
+<link rel="stylesheet" href="../theme.css">
 </head>
 <body>
 
@@ -160,6 +165,12 @@
     </a>
     <div class="nav-right">
       <div class="brand"><span class="dot"></span>Viam</div>
+      <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
+        <span class="tt-track">
+          <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="tt-thumb"><span class="tt-rays" aria-hidden="true"></span></span>
+        </span>
+      </button>
       <span class="nav-tag">ViamPulse</span>
     </div>
   </div>
@@ -311,5 +322,6 @@ const MONEDA = "$";   // símbolo de moneda
   cont.innerHTML = html;
 })();
 </script>
+<script src="../theme.js"></script>
 </body>
 </html>

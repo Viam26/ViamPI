@@ -7,6 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  /* Aplica el tema guardado antes de pintar para evitar el parpadeo */
+  (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 <style>
   :root{
     --bg:#0B0F14;
@@ -209,6 +213,7 @@
     *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   }
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
@@ -218,6 +223,12 @@
     <div class="nav-links">
       <a href="#proyectos">Proyectos</a>
       <a href="equipo/">Equipo</a>
+      <button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
+        <span class="tt-track">
+          <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="tt-thumb"><span class="tt-rays" aria-hidden="true"></span></span>
+        </span>
+      </button>
       <a class="nav-tag" href="#">CREAJ 2026</a>
     </div>
   </div>
@@ -406,20 +417,33 @@
     ctx.lineWidth = 1.5; ctx.stroke(); ctx.globalAlpha = 1;
   }
 
+  // Colores de la onda, leídos desde las variables CSS del tema activo
+  let waveEcho = 'rgba(110,138,245,0.5)';
+  let wavePulse = 'rgba(60,203,174,0.85)';
+  function refreshColors(){
+    const cs = getComputedStyle(document.documentElement);
+    const e = cs.getPropertyValue('--wave-echo').trim();
+    const p = cs.getPropertyValue('--wave-pulse').trim();
+    if(e) waveEcho = e;
+    if(p) wavePulse = p;
+  }
+  window.addEventListener('viam:themechange', refreshColors);
+
   let off = 0;
   function draw(){
     ctx.clearRect(0,0,w,h);
     const beatW = Math.max(220, w*0.26);
-    echo(off*0.5, 'rgba(110,138,245,0.5)', 0.5);
-    trace(off, 'rgba(60,203,174,0.85)', h*0.30, 2.2, 0.9, beatW);
+    echo(off*0.5, waveEcho, 0.5);
+    trace(off, wavePulse, h*0.30, 2.2, 0.9, beatW);
     off += 1.1;
     if(!reduce) requestAnimationFrame(draw);
   }
 
-  function start(){ resize(); if(reduce){ off = 0; draw(); } else { draw(); } }
+  function start(){ resize(); refreshColors(); if(reduce){ off = 0; draw(); } else { draw(); } }
   window.addEventListener('resize', resize);
   start();
 })();
 </script>
+<script src="theme.js"></script>
 </body>
 </html>

@@ -1,0 +1,139 @@
+/* ==========================================================================
+   Viam · Sistema de tema claro / oscuro + interruptor sol-luna
+   Compartido por todas las páginas. Se enlaza DESPUÉS del <style> en línea.
+   El tema se aplica con el atributo data-theme en <html>.
+   ========================================================================== */
+
+:root{ color-scheme:dark; }
+
+/* Colores usados por la onda ECG del hero (se leen desde JS) */
+:root{
+  --wave-pulse:rgba(60,203,174,.85);
+  --wave-echo:rgba(110,138,245,.5);
+}
+
+/* --------------------------------------------------------------------------
+   Paleta MODO CLARO — clínica, limpia y con buen contraste sobre blanco
+   -------------------------------------------------------------------------- */
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F4F7FB;
+  --bg-2:#E9F0F7;
+  --surface:#FFFFFF;
+  --surface-2:#EFF5FB;
+  --line:rgba(12,22,34,0.10);
+  --line-strong:#D3E0EC;
+  --text:#0E1620;
+  --text-dim:#46586B;
+  --text-faint:#788A9C;
+  --pulse:#0E9E82;                       /* teal más profundo para legibilidad */
+  --pulse-soft:rgba(14,158,130,0.12);
+  --vision:#4661D8;                      /* azul más profundo para legibilidad */
+  --vision-soft:rgba(70,97,216,0.12);
+  --wave-pulse:rgba(14,158,130,.9);
+  --wave-echo:rgba(70,97,216,.6);
+}
+
+/* Elementos con valores oscuros escritos a mano en el <style> en línea */
+html[data-theme="light"] nav{ background:rgba(244,247,251,0.72); }
+html[data-theme="light"] .hero-fade{
+  background:linear-gradient(180deg,
+    rgba(244,247,251,.35) 0%,
+    rgba(244,247,251,0) 30%,
+    rgba(244,247,251,0) 62%,
+    var(--bg) 100%);
+}
+html[data-theme="light"] .feature:hover{ background-color:rgba(12,22,34,0.025); }
+
+/* Transición suave global al cambiar de tema (activada temporalmente por JS) */
+html.theme-anim *:not(.theme-toggle):not(.tt-track):not(.tt-thumb):not(.tt-rays):not(.tt-stars):not(.tt-stars *){
+  transition:background-color .5s var(--ease,ease),
+             border-color .5s var(--ease,ease),
+             color .4s var(--ease,ease),
+             fill .4s var(--ease,ease),
+             stroke .4s var(--ease,ease) !important;
+}
+
+/* ==========================================================================
+   INTERRUPTOR CREATIVO SOL / LUNA
+   La luna (creciente + estrellas titilantes) se transforma en un sol con
+   rayos que giran. El pulgar se desliza con un pequeño rebote.
+   ========================================================================== */
+.theme-toggle{
+  --tt-w:64px; --tt-h:30px; --tt-pad:3px; --tt-thumb:24px;
+  appearance:none; -webkit-appearance:none;
+  border:0; margin:0; padding:0; background:transparent;
+  width:var(--tt-w); height:var(--tt-h); flex:none; line-height:0;
+  cursor:pointer; border-radius:999px;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.theme-toggle .tt-track{
+  position:relative; display:block; width:100%; height:100%;
+  border-radius:999px; overflow:hidden;
+  background:linear-gradient(160deg,#0c1826,#152740);
+  border:1px solid rgba(120,180,255,.28);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.5), 0 0 0 0 var(--pulse);
+  transition:background .55s var(--ease,ease),
+             border-color .55s var(--ease,ease),
+             box-shadow .35s var(--ease,ease),
+             transform .18s var(--ease,ease);
+}
+html[data-theme="light"] .theme-toggle .tt-track{
+  background:linear-gradient(160deg,#ffe7a8 0%,#ffcf74 44%,#a9d9ff 100%);
+  border-color:rgba(255,186,80,.6);
+}
+.theme-toggle:hover .tt-track{ box-shadow:inset 0 1px 2px rgba(0,0,0,.45), 0 0 14px -2px var(--pulse); }
+html[data-theme="light"] .theme-toggle:hover .tt-track{ box-shadow:inset 0 1px 2px rgba(140,90,0,.18), 0 0 16px -2px #ffb020; }
+.theme-toggle:active .tt-track{ transform:scale(.95); }
+
+/* Pulgar: luna creciente en oscuro */
+.tt-thumb{
+  position:absolute; top:var(--tt-pad); left:var(--tt-pad);
+  width:var(--tt-thumb); height:var(--tt-thumb); border-radius:50%;
+  background:#e9eff8;
+  box-shadow:inset 6px -3px 0 0 #16273f,
+             0 0 10px 0 rgba(150,195,255,.55),
+             0 2px 4px rgba(0,0,0,.45);
+  transition:transform .5s cubic-bezier(.5,1.65,.4,1),
+             background .5s var(--ease,ease),
+             box-shadow .5s var(--ease,ease);
+  z-index:2;
+}
+/* Pulgar: sol brillante en claro (se desliza a la derecha) */
+html[data-theme="light"] .tt-thumb{
+  transform:translateX(calc(var(--tt-w) - var(--tt-thumb) - (var(--tt-pad) * 2)));
+  background:radial-gradient(circle at 35% 30%, #fff4c6, #ffcf3f 58%, #ffb020);
+  box-shadow:0 0 12px 2px rgba(255,180,40,.75), 0 2px 5px rgba(180,110,0,.35);
+}
+
+/* Rayos del sol (solo modo claro) */
+.tt-rays{
+  position:absolute; inset:-6px; border-radius:50%; pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,#ffb020 0deg 3.5deg,transparent 3.5deg 45deg);
+  -webkit-mask:radial-gradient(circle, transparent 56%, #000 59%, #000 70%, transparent 73%);
+          mask:radial-gradient(circle, transparent 56%, #000 59%, #000 70%, transparent 73%);
+  opacity:0; transform:scale(.3) rotate(-40deg);
+  transition:opacity .45s var(--ease,ease), transform .6s var(--ease,ease);
+}
+html[data-theme="light"] .tt-rays{ opacity:.95; transform:scale(1) rotate(0); }
+
+/* Estrellas titilantes (solo modo oscuro) */
+.tt-stars{ position:absolute; inset:0; pointer-events:none; transition:opacity .4s var(--ease,ease); z-index:1; }
+.tt-stars i{ position:absolute; width:2px; height:2px; border-radius:50%;
+  background:#dbe8ff; box-shadow:0 0 4px #bcd4ff; opacity:.9; }
+.tt-stars i:nth-child(1){ left:40px; top:8px;  animation:tt-tw 2.6s ease-in-out infinite; }
+.tt-stars i:nth-child(2){ left:50px; top:16px; width:1.5px; height:1.5px; animation:tt-tw 3.1s ease-in-out .5s infinite; }
+.tt-stars i:nth-child(3){ left:34px; top:19px; width:1.5px; height:1.5px; animation:tt-tw 2.2s ease-in-out .9s infinite; }
+.tt-stars i:nth-child(4){ left:56px; top:9px;  animation:tt-tw 3.4s ease-in-out .2s infinite; }
+html[data-theme="light"] .tt-stars{ opacity:0; }
+
+@keyframes tt-tw{ 0%,100%{opacity:.25;transform:scale(.7)} 50%{opacity:1;transform:scale(1)} }
+@keyframes tt-spin{ to{transform:rotate(360deg)} }
+
+@media (prefers-reduced-motion:no-preference){
+  html[data-theme="light"] .tt-rays{ animation:tt-spin 10s linear infinite; }
+}
+@media (prefers-reduced-motion:reduce){
+  .tt-stars i{ animation:none !important; }
+}
