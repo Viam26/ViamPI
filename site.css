@@ -25,18 +25,18 @@
   --text-dim:#AAB3BF;
   --text-faint:#6C7683;
 
-  /* Marca */
-  --pulse:#37D3B5;      --pulse-soft:rgba(55,211,181,0.14);
-  --vision:#7C93FF;     --vision-soft:rgba(124,147,255,0.14);
+  /* Marca — rojo pastel (ViamPulse) + morado pastel (ViamVision) */
+  --pulse:#FFAAB0;      --pulse-soft:rgba(255,170,176,0.16);
+  --vision:#C9AEF5;     --vision-soft:rgba(201,174,245,0.18);
 
   /* Acento activo (lo cambian las páginas de proyecto) */
   --accent:var(--pulse);
   --accent-soft:var(--pulse-soft);
-  --on-accent:#05201A;
+  --on-accent:#2A0C11;   /* texto sobre botones de acento (pastel claro) */
 
   /* Onda ECG del hero (leída por JS) */
-  --wave-pulse:rgba(55,211,181,.85);
-  --wave-echo:rgba(124,147,255,.5);
+  --wave-pulse:rgba(255,170,176,.9);
+  --wave-echo:rgba(201,174,245,.55);
 
   /* Sombras */
   --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 6px 16px -10px rgba(0,0,0,.6);
@@ -56,9 +56,9 @@
   --proj-vision:var(--vision);
 }
 
-/* Página de proyecto: fija el acento */
-body.proj-pulse{  --accent:var(--pulse);  --accent-soft:var(--pulse-soft);  --on-accent:#05201A; }
-body.proj-vision{ --accent:var(--vision); --accent-soft:var(--vision-soft); --on-accent:#0A1024; }
+/* Página de proyecto: fija el acento (el texto --on-accent lo decide el tema) */
+body.proj-pulse{  --accent:var(--pulse);  --accent-soft:var(--pulse-soft); }
+body.proj-vision{ --accent:var(--vision); --accent-soft:var(--vision-soft); }
 
 /* --------------------------------------------------------------------------
    PALETA MODO CLARO — estilo Apple (#f5f5f7 / blanco / gris 86868b)
@@ -75,10 +75,12 @@ html[data-theme="light"]{
   --text:#1D1D1F;
   --text-dim:#51555E;
   --text-faint:#86868B;
-  --pulse:#0E9E82;  --pulse-soft:rgba(14,158,130,0.12);
-  --vision:#4658D6; --vision-soft:rgba(70,88,214,0.12);
-  --wave-pulse:rgba(14,158,130,.9);
-  --wave-echo:rgba(70,88,214,.6);
+  /* Pastel un poco más profundo para contraste legible sobre blanco */
+  --pulse:#D06576;  --pulse-soft:rgba(208,101,118,0.13);
+  --vision:#7C5DD1; --vision-soft:rgba(124,93,209,0.13);
+  --on-accent:#FFFFFF;   /* texto blanco sobre acentos (más saturados en claro) */
+  --wave-pulse:rgba(208,101,118,.9);
+  --wave-echo:rgba(124,93,209,.6);
   --shadow-sm:0 1px 2px rgba(16,24,40,.05), 0 8px 20px -14px rgba(16,24,40,.18);
   --shadow:0 2px 10px rgba(16,24,40,.05), 0 24px 50px -26px rgba(16,24,40,.22);
   --shadow-lg:0 40px 90px -34px rgba(16,24,40,.28);
