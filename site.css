@@ -445,6 +445,21 @@ main .member:hover{border-color:var(--accent);transform:translateY(-5px);box-sha
 .note p{color:var(--text-dim);font-size:16px;max-width:560px}
 .note p b{color:var(--text);font-weight:600}
 
+/* Foto grupal del equipo — tamaño mediano-pequeño, centrada */
+.team-photo{
+  max-width:420px;margin:clamp(30px,5vw,48px) auto 0;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:12px;box-shadow:var(--shadow-sm);
+  transition:border-color .35s var(--ease),transform .35s var(--ease),box-shadow .35s var(--ease)}
+.team-photo:hover{border-color:var(--accent);transform:translateY(-5px);box-shadow:var(--shadow)}
+.team-photo img{width:100%;height:auto;border-radius:calc(var(--r-lg) - 13px);display:block}
+.team-photo figcaption{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;color:var(--text-faint);
+  padding:14px 10px 6px;text-align:center}
+.team-photo .tp-dot{flex:none;width:7px;height:7px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 8px var(--accent)}
+
 /* --------------------------------------------------------------------------
    FOOTER genérico
    -------------------------------------------------------------------------- */
