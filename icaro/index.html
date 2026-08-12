@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ViamPulse — Estetoscopio digital con IA · Viam</title>
+<title>ICARO — Robot asistente inteligente · Viam</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 </script>
 <link rel="stylesheet" href="../site.css">
 </head>
-<body class="proj-pulse">
+<body class="proj-icaro">
 
 <nav>
   <div class="wrap nav-in">
@@ -29,7 +29,7 @@
           <span class="tt-thumb"><span class="tt-rays" aria-hidden="true"></span></span>
         </span>
       </button>
-      <span class="nav-tag">ViamPulse</span>
+      <span class="nav-tag">ICARO</span>
     </div>
   </div>
 </nav>
@@ -37,21 +37,29 @@
 <section class="phead">
   <div class="wrap phead-in">
     <div>
-      <span class="modality">Auscultación · estetoscopio digital</span>
-      <h1 class="ptitle">ViamPulse</h1>
-      <p class="ptag">El corazón, con claridad digital.</p>
-      <p class="plede">Un estetoscopio digital que captura el sonido cardíaco, lo amplifica y filtra el ruido del entorno. Un modelo de IA hecho y entrenado por nosotros analiza la señal en tiempo real y resalta patrones que podrían pasar desapercibidos al oído.</p>
-      <div class="hero-actions">
-        <!-- ▼▼ Pega aquí el enlace directo del APK (ver nota al final del archivo) ▼▼ -->
-        <a class="btn-dl" href="https://github.com/Viam26/ViamPI/releases/download/ViamPulse/ViamPulse.apk" download="ViamPulse.apk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
-          Descargar aplicación
-          <span class="sz">APK · 104 MB</span>
-        </a>
-      </div>
+      <span class="modality">Asistencia · sala de espera</span>
+      <h1 class="ptitle">ICARO</h1>
+      <p class="ptag">Robot asistente inteligente, sin depender de internet.</p>
+      <p class="plede">ICARO apoya al personal de salud en la sala de espera con IA local: registra datos del paciente, toma la temperatura sin contacto y puede ayudar a trasladarlo, para que la atención avance con menos saturación.</p>
     </div>
-    <div class="phead-art">
-      <img class="product-img" src="estetoscopio.png" alt="Prototipo del estetoscopio digital ViamPulse" width="460" height="498">
+    <div class="phead-art" aria-hidden="true">
+      <svg class="art-svg" viewBox="0 0 320 280" fill="none">
+        <g class="bot" stroke="var(--accent)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="110" y="70" width="100" height="88" rx="22"/>
+          <circle class="eye" cx="140" cy="108" r="8" fill="var(--accent)" stroke="none"/>
+          <circle class="eye" cx="180" cy="108" r="8" fill="var(--accent)" stroke="none"/>
+          <path d="M145 132h30" opacity=".7"/>
+          <path d="M160 70V48"/>
+          <circle cx="160" cy="42" r="8" fill="var(--accent)" stroke="none" opacity=".9"/>
+          <path d="M110 100H86a12 12 0 0 0-12 12v28"/>
+          <path d="M210 100h24a12 12 0 0 1 12 12v28"/>
+          <rect x="118" y="158" width="84" height="70" rx="16"/>
+          <circle class="wheel" cx="138" cy="240" r="16"/>
+          <circle class="wheel" cx="182" cy="240" r="16"/>
+          <circle cx="138" cy="240" r="5" fill="var(--accent)" stroke="none"/>
+          <circle cx="182" cy="240" r="5" fill="var(--accent)" stroke="none"/>
+        </g>
+      </svg>
     </div>
   </div>
 </section>
@@ -61,43 +69,42 @@
     <div>
       <div class="block">
         <p class="m-sub">El proyecto</p>
-        <h2>Escuchar mejor para diagnosticar antes</h2>
-        <p class="prose">ViamPulse captura el sonido del cuerpo a través de un sensor, lo <b>amplifica</b> y elimina el ruido ambiental. La señal se procesa con un modelo de <b>inteligencia artificial</b> que la clasifica en tiempo real y muestra la onda en pantalla, ayudando a detectar patrones anómalos. El modelo fue entrenado por el equipo y reconoce <b>de entre 4 anomalías cardíacas diferentes</b>.</p>
+        <h2>Menos saturación, más atención</h2>
+        <p class="prose">ICARO es un <b>robot asistente inteligente</b> pensado para la sala de espera. Corre con <b>IA en local</b>, sin necesidad de internet, para registrar datos del paciente, medir la temperatura <b>sin contacto</b> y apoyar el traslado cuando hace falta. Así el personal clínico puede enfocarse en atender, no en la fila.</p>
       </div>
 
       <div class="block">
         <p class="m-sub">Lo que hace</p>
         <ul class="feat">
-          <li><b>Amplifica y filtra</b> el sonido cardíaco en tiempo real.</li>
-          <li><b>Clasifica</b> los sonidos con IA y señala posibles anomalías.</li>
-          <li><b>Visualiza</b> la onda como fonocardiograma para revisarla mejor.</li>
-          <li><b>Registra y exporta</b> cada auscultación y la guarda en la nube con su respectivo diagnóstico.</li>
+          <li><b>Registra</b> los datos del paciente antes de que entre a consulta.</li>
+          <li><b>Mide la temperatura</b> sin contacto, de forma rápida y segura.</li>
+          <li><b>Asiste el traslado</b> del paciente para agilizar el flujo en sala.</li>
+          <li><b>Opera offline</b> con IA local, sin depender de la red del hospital.</li>
         </ul>
       </div>
 
       <div class="block">
         <p class="m-sub">Construido con</p>
         <div class="specs">
-          <span class="spec">Estetoscopio genérico</span>
-          <span class="spec">Raspberry Pico</span>
-          <span class="spec">Tensorflow</span>
-          <span class="spec">Python</span>
+          <span class="spec">IA local · offline</span>
+          <span class="spec">Sensor térmico IR</span>
+          <span class="spec">Electrónica embebida</span>
+          <span class="spec">Software propio</span>
         </div>
       </div>
 
       <div class="block" id="cotizacion">
         <p class="m-sub">Cotización · materiales</p>
         <h2>¿Cuánto cuesta construirlo?</h2>
-        <p class="prose" style="margin-bottom:22px">Componentes usados en el proyecto, con su precio aproximado y dónde comprarlos.</p>
+        <p class="prose" style="margin-bottom:22px">Componentes base del prototipo, con precio aproximado. Los enlaces se irán completando a medida que se cierre la lista de compras.</p>
         <div class="quote" id="quote"><!-- se genera con el script de abajo --></div>
       </div>
 
       <div class="switch">
-        <!-- Enlace al otro proyecto -->
-        <a href="../viamvision/">
+        <a href="../viampulse/">
           <div>
             <div class="lbl">Siguiente proyecto</div>
-            <div class="nm">ViamVision →</div>
+            <div class="nm">ViamPulse →</div>
           </div>
           <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -107,28 +114,21 @@
     <aside class="aside">
       <div class="panel">
         <h3>Ficha técnica</h3>
-        <div class="kv"><span>Modalidad</span><span>Auscultación</span></div>
-        <div class="kv"><span>Señal</span><span>Audio cardíaco / respiratorio</span></div>
-        <div class="kv"><span>IA</span><span>Clasificación en tiempo real</span></div>
-        <div class="kv"><span>Anomalías</span><span>4 identificadas</span></div>
+        <div class="kv"><span>Modalidad</span><span>Asistencia en sala</span></div>
+        <div class="kv"><span>IA</span><span>Local · sin internet</span></div>
+        <div class="kv"><span>Vitales</span><span>Temperatura IR</span></div>
+        <div class="kv"><span>Flujo</span><span>Registro + traslado</span></div>
+        <div class="kv"><span>Encargado</span><span>Jhonnathan</span></div>
         <div class="kv"><span>Licencia</span><span>Código abierto</span></div>
-      </div>
-      <div class="repo dl-card">
-        <span class="oss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>App para Android · APK</span>
-        <!-- ▼▼ Mismo enlace del APK que en el hero ▼▼ -->
-        <a class="gh dl" href="https://github.com/Viam26/ViamPI/releases/download/ViamPulse/ViamPulse.apk" download="ViamPulse.apk">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
-          Descargar aplicación
-        </a>
-        <p class="q-note" style="margin-top:12px">Android 8.0+ · 104 MB. Activa “instalar apps de orígenes desconocidos” para instalar el APK.</p>
       </div>
       <div class="repo">
         <span class="oss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M7 11V7a5 5 0 0 1 10 0v4M5 11h14v9H5z"/></svg>Repositorio público en GitHub</span>
-        <!-- ▼▼ Reemplaza esta URL por el repo real de ViamPulse ▼▼ -->
-        <a class="gh secondary" href="https://github.com/Viam26/Estetoscopio" target="_blank" rel="noopener">
+        <!-- ▼▼ Reemplaza esta URL por el repo real de ICARO ▼▼ -->
+        <a class="gh secondary" href="https://github.com/Viam26" target="_blank" rel="noopener">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
           Ver el código
         </a>
+        <p class="q-note">El repositorio específico de ICARO se publicará cuando el prototipo esté listo para compartir.</p>
       </div>
     </aside>
   </div>
@@ -150,11 +150,12 @@
    - enlace : URL de la tienda que lo vende (deja "" si no hay)
    ========================================================= */
 const PRODUCTOS = [
-  { nombre:"Estetoscopio genérico",          precio:6.95,  cantidad:1, enlace:"https://www.amazon.com/dp/B00HW8EEOG?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1" },
-  { nombre:"Raspberry Pi Pico",              precio:11.99,  cantidad:1, enlace:"https://www.amazon.com/dp/B08TVF499B?ref=ppx_yo2ov_dt_b_fed_asin_title" },
-  { nombre:"Adaptador de audio USB",   precio:11.99,  cantidad:1, enlace:"https://www.amazon.com/dp/B01N905VOY?ref=ppx_yo2ov_dt_b_fed_asin_title" },
-  { nombre:"Micrófono BOYA",    precio:14.95,  cantidad:1, enlace:"https://www.amazon.com/dp/B00MRMU2HU?ref=ppx_yo2ov_dt_b_fed_asin_title" },
-  { nombre:"Bateria de litio recargable",    precio:9.99,  cantidad:1, enlace:"https://www.amazon.com/dp/B0CM64RMT9?ref=ppx_yo2ov_dt_b_fed_asin_title" },
+  { nombre:"Raspberry Pi (cómputo + IA local)", precio:75.00, cantidad:1, enlace:"" },
+  { nombre:"Sensor de temperatura IR (sin contacto)", precio:18.00, cantidad:1, enlace:"" },
+  { nombre:"Motores / drivers de movilidad", precio:35.00, cantidad:1, enlace:"" },
+  { nombre:"Chasis y estructura mecánica", precio:40.00, cantidad:1, enlace:"" },
+  { nombre:"Pantalla táctil / interfaz", precio:45.00, cantidad:1, enlace:"" },
+  { nombre:"Batería y gestión de carga", precio:28.00, cantidad:1, enlace:"" },
 ];
 const MONEDA = "$";   // símbolo de moneda
 
