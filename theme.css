@@ -30,6 +30,8 @@ html[data-theme="light"]{
   --pulse-soft:rgba(14,158,130,0.12);
   --vision:#4661D8;                      /* azul más profundo para legibilidad */
   --vision-soft:rgba(70,97,216,0.12);
+  --icaro:#1F8A78;
+  --icaro-soft:rgba(31,138,120,0.12);
   --wave-pulse:rgba(14,158,130,.9);
   --wave-echo:rgba(70,97,216,.6);
 }
