@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitácora — ViamPulse · Viam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+  (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../../site.css">
+</head>
+<body class="proj-pulse bitacora-page">
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="back" href="../">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      ViamPulse
+    </a>
+    <div class="nav-right">
+      <a class="brand" href="../../"><span class="dot"></span>Viam</a>
+      <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
+        <span class="tt-track">
+          <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="tt-thumb"><span class="tt-rays" aria-hidden="true"></span></span>
+        </span>
+      </button>
+      <span class="nav-tag">Bitácora</span>
+    </div>
+  </div>
+</nav>
+
+<section class="bhead">
+  <div class="wrap">
+    <p class="eyebrow">Proceso · ViamPulse</p>
+    <h1 class="btitle">Bitácora</h1>
+    <p class="blede">Del primer boceto al prototipo final. Cada entrada es un paso del camino.</p>
+  </div>
+</section>
+
+<main class="bitacora-main">
+  <div class="wrap">
+    <div class="bitacora-timeline" id="bitacora"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap colophon">
+    <span>© 2026 Viam</span>
+    <span>Hardware y software de código abierto</span>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   BITÁCORA — EDITA AQUÍ LAS ENTRADAS
+   Copia un bloque y cambia titulo, subtitulo, fecha y media.
+
+   Cada entrada:
+   - titulo    : título del paso
+   - subtitulo : descripción corta (opcional)
+   - fecha     : texto libre, ej. "Ene 2026"
+   - media     : array de archivos locales (imagen o video)
+
+   Cada media:
+   - src   : ruta relativa a esta carpeta bitacora/ (ej. "01-prototipo.jpg")
+   - alt   : texto alternativo / pie de foto
+   - forma : opcional — "portrait" | "landscape" | "square"
+             (si no pones forma, se detecta sola al cargar)
+   - poster: solo videos — imagen de preview (opcional)
+
+   Ejemplo con varias fotos:
+   {
+     titulo: "Ensamble",
+     subtitulo: "Placa y sensor conectados.",
+     fecha: "Feb 2026",
+     media: [
+       { src: "ensamble-1.jpg", alt: "Vista superior" },
+       { src: "ensamble-2.jpg", alt: "Detalle del micrófono" },
+     ]
+   }
+   ========================================================= */
+const BITACORA = [
+  {
+    titulo: "Ejemplo — reemplaza este bloque",
+    subtitulo: "Borra esta entrada y añade la tuya. Las fotos van en la carpeta bitacora/.",
+    fecha: "Ene 2026",
+    media: [
+      { src: "../estetoscopio.png", alt: "Prototipo actual de ViamPulse" },
+    ]
+  },
+];
+</script>
+<script src="../../bitacora.js"></script>
+<script src="../../site.js"></script>
+</body>
+</html>
