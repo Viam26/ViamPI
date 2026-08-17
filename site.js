@@ -43,7 +43,7 @@
     if (!('IntersectionObserver' in window)) return;
 
     var selector = '.section-head,.feature,.block,.switch,.note,.credit-card,.foot-head,' +
-                   'footer#equipo .member,main .member,.phead-in,.thead .wrap';
+                   'footer#equipo .member,main .member,.phead-in,.thead .wrap,.bhead .wrap,.bit-entry,.bitacora-card';
     var els = document.querySelectorAll(selector);
     if (!els.length) return;
 
