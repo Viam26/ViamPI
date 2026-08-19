@@ -54,82 +54,8 @@
   </div>
 </footer>
 
-<script>
-/* =========================================================
-   BITÁCORA — EDITA AQUÍ LAS ENTRADAS
-   Copia un bloque y cambia titulo, subtitulo, fecha y media.
-
-   Cada entrada:
-   - titulo    : título del paso
-   - subtitulo : descripción corta (opcional)
-   - fecha     : texto libre, ej. "Ene 2026"
-   - media     : array de archivos locales (imagen o video)
-
-   Cada media:
-   - src   : ruta relativa a esta carpeta bitacora/ (ej. "01-prototipo.jpg")
-   - alt   : texto alternativo / pie de foto
-   - forma : opcional — "portrait" | "landscape" | "square"
-             (si no pones forma, se detecta sola al cargar)
-   - poster: solo videos — imagen de preview (opcional)
-
-   Ejemplo con varias fotos:
-   {
-     titulo: "Ensamble",
-     subtitulo: "Placa y sensor conectados.",
-     fecha: "Feb 2026",
-     media: [
-       { src: "ensamble-1.jpg", alt: "Vista superior" },
-       { src: "ensamble-2.jpg", alt: "Detalle del micrófono" },
-     ]
-   }
-   ========================================================= */
-const BITACORA = [
-  {
-    titulo: "Conexiones de circuitos",
-    subtitulo: "/.",
-    fecha: "May 2026",
-    media: [
-      { src: "../VP1.jpeg", alt: "Prototipo actual de ViamPulse" },
-      { src: "../VP1.1.jpeg", alt: "Prototipo actual de ViamPulse" },
-    ]
-  },
-    {
-    titulo: "Circuitos en el primer modelo de chasis",
-    subtitulo: "/.",
-    fecha: "May 2026",
-    media: [
-      { src: "../VP2.jpeg", alt: "Prototipo actual de ViamPulse" },
-      { src: "../VP2.1.jpeg", alt: "Prototipo actual de ViamPulse" },
-    ]
-  },
-      {
-    titulo: "yay",
-    subtitulo: "/.",
-    fecha: "May 2026",
-    media: [
-      { src: "../VP3.mp4", alt: "Prototipo actual de ViamPulse" },
-    ]
-  },
-      {
-    titulo: "Diseñado de nuevo modelo de chasis",
-    subtitulo: "/.",
-    fecha: "Jul 2026",
-    media: [
-      { src: "../VP4.mp4", alt: "Prototipo actual de ViamPulse" },
-      { src: "../VP4.1.jpeg", alt: "Prototipo actual de ViamPulse" },
-      { src: "../VP4.2.jpeg", alt: "Prototipo actual de ViamPulse" },
-    ]
-  },
-        {
-    titulo: "Cajita cajona riquita",
-    subtitulo: "/.",
-    fecha: "Ago 2026",
-    media: [
-      { src: "../VP5.jpeg", alt: "Prototipo actual de ViamPulse" },
-    ]
-  },
-];
-</script>
+<script src="entries.js"></script>
+<script>ViamBitacoraProject = ViamBitacoraData.viampulse;</script>
 <script src="../../bitacora.js"></script>
 <script src="../../site.js"></script>
 </body>

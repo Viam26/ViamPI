@@ -44,7 +44,7 @@
 
 <main>
   <div class="wrap">
-    <div class="team">
+    <div class="team team-core">
 
       <!-- ▼▼ Edita nombre, usuario de Instagram, rol y bio de cada integrante ▼▼ -->
 
@@ -140,36 +140,39 @@
         </div>
       </article>
 
-      <!-- Integrante 5 -->
-      <article class="member">
-        <div class="m-top">
-          <div class="avatar">Jh</div>
-          <div class="m-id">
-            <div class="name">Jhonnathan</div>
-            <div class="role">ICARO · Software y electrónica</div>
-          </div>
-        </div>
-        <p class="m-bio">Encargado de ICARO. Une software e electrónica para que el robot piense en local, registre pacientes, mida temperatura sin contacto y apoye al personal en sala de espera.</p>
-        <div class="m-foot">
-          <span class="ig-link">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            @itspiiico
-          </span>
-          <a class="ig-btn" href="https://instagram.com/itspiiico" target="_blank" rel="noopener">Instagram
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M9 7h8v8"/></svg>
-          </a>
-        </div>
-      </article>
-
     </div>
 
-    <figure class="team-photo">
+    <div class="team-spotlight">
+      <button class="member-spotlight" type="button" data-open-modal="jhonnathan-modal" aria-haspopup="dialog">
+        <span class="avatar">Jh</span>
+        <span><span class="name">Jhonnathan</span><br><span class="handle">@itspiiico · ICARO</span></span>
+      </button>
+    </div>
+
+    <div class="viam-modal" id="jhonnathan-modal" role="dialog" aria-modal="true" aria-labelledby="jhonnathan-modal-title" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-panel">
+        <button class="modal-close" type="button" data-close-modal aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="modal-avatar">Jh</div>
+        <h3 class="modal-title" id="jhonnathan-modal-title">Jhonnathan</h3>
+        <p class="modal-role">ICARO · Software y electrónica</p>
+        <p class="modal-bio">Encargado de ICARO. Une software e electrónica para que el robot piense en local, registre pacientes, mida temperatura sin contacto y apoye al personal en sala de espera.</p>
+        <a class="ig-btn" href="https://instagram.com/itspiiico" target="_blank" rel="noopener">Instagram @itspiiico
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn ghost modal-proj" href="../icaro/">Ver ICARO</a>
+      </div>
+    </div>
+
+    <button class="team-photo team-photo-btn" type="button" aria-label="Ampliar foto del equipo" data-lightbox="wasawasa.jpeg" data-alt="Foto grupal del equipo Viam">
       <img src="wasawasa.jpeg" alt="Foto grupal del equipo Viam" width="2048" height="1536" loading="lazy">
-      <figcaption>
+      <span class="team-photo-cap">
         <span class="tp-dot"></span>
-        Caleb, Jesús, Castaneda, Zuleta y chato — el equipo Viam
-      </figcaption>
-    </figure>
+        Caleb, Jesús, Castaneda, Zuleta y chato — el equipo Viam · clic para ampliar
+      </span>
+    </button>
 
     <div class="note">
       <p>Viam es un proyecto de <b>código abierto</b> hecho por estudiantes de 3er año de bachillerato en electrónica. Conoce los tres instrumentos que construyó el equipo.</p>

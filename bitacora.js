@@ -1,6 +1,6 @@
 /* ==========================================================================
    Viam · Render de bitácora
-   Edita el array BITACORA en cada página bitacora/index.html
+   Datos en viampulse|viamvision|icaro/bitacora/entries.js
    ========================================================================== */
 (function () {
   var VIDEO_EXT = /\.(mp4|webm|mov)(\?|$)/i;
@@ -12,6 +12,13 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function mediaUrl(basePath, src) {
+    var path = (basePath || '') + (src || '');
+    return path.split('/').filter(Boolean).map(function (part) {
+      return encodeURIComponent(part);
+    }).join('/');
   }
 
   function isVideo(src) {
@@ -44,16 +51,16 @@
     return 'layout-4 layout-grid';
   }
 
-  function mediaHtml(item, index) {
-    var src = esc(item.src);
+  function mediaHtml(item, index, basePath) {
+    var url = mediaUrl(basePath, item.src);
     var alt = esc(item.alt || '');
     var manual = item.forma || '';
     if (isVideo(item.src)) {
-      var poster = item.poster ? ' poster="' + esc(item.poster) + '"' : '';
+      var poster = item.poster ? ' poster="' + esc(mediaUrl(basePath, item.poster)) + '"' : '';
       return (
         '<figure class="bit-item is-video" data-index="' + index + '"' +
         (manual ? ' data-forma="' + manual + '"' : '') + '>' +
-        '<video src="' + src + '"' + poster + ' controls playsinline preload="metadata"></video>' +
+        '<video src="' + esc(url) + '"' + poster + ' controls playsinline preload="metadata"></video>' +
         (alt ? '<figcaption>' + alt + '</figcaption>' : '') +
         '</figure>'
       );
@@ -61,21 +68,24 @@
     return (
       '<figure class="bit-item" data-index="' + index + '"' +
       (manual ? ' data-forma="' + manual + '"' : '') + '>' +
-      '<img src="' + src + '" alt="' + alt + '" loading="lazy" decoding="async">' +
+      '<button type="button" class="bit-zoom" data-lightbox="' + esc(url) + '" data-alt="' + alt + '" aria-label="Ampliar imagen">' +
+      '<img src="' + esc(url) + '" alt="' + alt + '" loading="lazy" decoding="async">' +
+      '</button>' +
       (alt ? '<figcaption>' + alt + '</figcaption>' : '') +
       '</figure>'
     );
   }
 
-  function entryHtml(block, i) {
+  function entryHtml(block, i, basePath) {
     var media = block.media || [];
-    var items = media.map(function (m, j) { return mediaHtml(m, j); }).join('');
+    var items = media.map(function (m, j) { return mediaHtml(m, j, basePath); }).join('');
+    var sub = block.subtitulo && block.subtitulo !== '/.' ? block.subtitulo : '';
     return (
       '<article class="bit-entry" id="bit-' + i + '">' +
         '<header class="bit-head">' +
-          (block.fecha ? '<time class="bit-date" datetime="">' + esc(block.fecha) + '</time>' : '') +
+          (block.fecha ? '<time class="bit-date">' + esc(block.fecha) + '</time>' : '') +
           '<h2 class="bit-title">' + esc(block.titulo) + '</h2>' +
-          (block.subtitulo ? '<p class="bit-sub">' + esc(block.subtitulo) + '</p>' : '') +
+          (sub ? '<p class="bit-sub">' + esc(sub) + '</p>' : '') +
         '</header>' +
         (items ? '<div class="bit-media">' + items + '</div>' : '') +
       '</article>'
@@ -127,30 +137,68 @@
     });
   }
 
-  function renderBitacora(entries) {
-    var root = document.getElementById('bitacora');
-    if (!root) return;
+  function renderInto(entries, root, basePath) {
+    if (!root) return Promise.resolve();
 
     if (!entries || !entries.length) {
-      root.innerHTML = '<p class="bit-empty">Aún no hay entradas. Edita el array <code>BITACORA</code> en esta página.</p>';
-      return;
+      root.innerHTML = '<p class="bit-empty">Sin entradas todavía.</p>';
+      return Promise.resolve();
     }
 
-    root.innerHTML = entries.map(entryHtml).join('');
+    root.innerHTML = entries.map(function (b, i) { return entryHtml(b, i, basePath); }).join('');
 
     var containers = root.querySelectorAll('.bit-media');
-    Promise.all(Array.prototype.map.call(containers, applyLayout)).then(function () {
+    return Promise.all(Array.prototype.map.call(containers, applyLayout)).then(function () {
       root.classList.add('bit-ready');
     });
   }
 
-  window.ViamBitacora = { render: renderBitacora };
+  function renderBitacora(entries, root, basePath) {
+    root = root || document.getElementById('bitacora');
+    return renderInto(entries, root, basePath || '');
+  }
 
-  if (typeof BITACORA !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function () { renderBitacora(BITACORA); });
-    } else {
-      renderBitacora(BITACORA);
-    }
+  function renderGlobal(sections, root) {
+    if (!root || !sections || !sections.length) return Promise.resolve();
+
+    root.innerHTML = sections.map(function (section, si) {
+      return (
+        '<section class="bit-project proj-' + esc(section.slug) + '" id="bitacora-' + esc(section.slug) + '">' +
+          '<div class="bit-project-head">' +
+            '<div>' +
+              '<span class="modality">' + esc(section.name) + '</span>' +
+              '<h2 class="bit-project-title">Proceso · ' + esc(section.name) + '</h2>' +
+            '</div>' +
+            (section.href ? '<a class="bit-project-link" href="' + esc(section.href) + '">Ver bitácora completa<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>' : '') +
+          '</div>' +
+          '<div class="bitacora-timeline" id="bit-timeline-' + si + '"></div>' +
+        '</section>'
+      );
+    }).join('');
+
+    return Promise.all(sections.map(function (section, si) {
+      var sub = root.querySelector('#bit-timeline-' + si);
+      var base = section.href || '';
+      return renderInto(section.entries, sub, base);
+    })).then(function () {
+      root.classList.add('bit-ready');
+    });
+  }
+
+  function initProjectPage() {
+    var root = document.getElementById('bitacora');
+    if (!root || !window.ViamBitacoraProject) return;
+    renderBitacora(ViamBitacoraProject.entries, root, '');
+  }
+
+  window.ViamBitacora = {
+    render: renderBitacora,
+    renderGlobal: renderGlobal,
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProjectPage);
+  } else {
+    initProjectPage();
   }
 })();
