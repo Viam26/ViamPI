@@ -288,6 +288,10 @@ nav{
   animation:floaty 6.5s ease-in-out infinite;
   transition:transform .6s var(--spring);
 }
+/* ICARO es una foto alta y chica: no estirarla al mismo ancho que las otras */
+.feature.icaro .feature-preview{
+  width:auto;max-width:180px;max-height:360px;
+}
 .feature:hover .feature-preview{transform:scale(1.03)}
 .art-svg{width:100%;max-width:440px;height:auto;filter:drop-shadow(0 10px 30px var(--accent-soft));
   transition:transform .6s var(--spring)}
@@ -324,9 +328,10 @@ nav{
 .phead-art .art-svg{max-width:360px}
 .phead-art .art-svg .ecg{stroke:var(--accent);filter:drop-shadow(0 0 10px var(--accent));
   stroke-dasharray:1500;stroke-dashoffset:1500;animation:dash 2.6s var(--ease) .2s forwards}
-.product-img{width:100%;max-width:440px;height:auto;
+.product-img{width:100%;max-width:440px;height:auto;object-fit:contain;
   filter:drop-shadow(0 30px 60px rgba(0,0,0,.35)) drop-shadow(0 0 40px var(--accent-soft));
   animation:floaty 6.5s ease-in-out infinite}
+.proj-icaro .product-img{width:auto;max-width:180px;max-height:360px}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 @media(max-width:860px){
   .phead-in{grid-template-columns:1fr;gap:32px}
