@@ -39,7 +39,7 @@
 
     var selector = '.section-head,.feature,.block,.switch,.note,.credit-card,.foot-head,' +
       'footer#equipo .member,main .member,.phead-in,.thead .wrap,.bhead .wrap,.bit-entry,.bitacora-card,' +
-      '.bit-project,.team-spotlight,.team-photo-btn';
+      '.bit-project,.team-spotlight,.team-photo-btn,.camino-summary,.camino-hero-in';
     var els = document.querySelectorAll(selector);
     if (!els.length) return;
 

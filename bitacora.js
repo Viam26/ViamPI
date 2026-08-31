@@ -185,6 +185,85 @@
     });
   }
 
+  function padStep(n) {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  function dateSpan(entries) {
+    if (!entries || !entries.length) return '';
+    var dates = entries.map(function (e) { return e.fecha; }).filter(Boolean);
+    if (!dates.length) return '';
+    var first = dates[0];
+    var last = dates[dates.length - 1];
+    return first === last ? first : first + ' — ' + last;
+  }
+
+  function caminoStepHtml(block, i, basePath, idPrefix) {
+    var media = block.media || [];
+    var items = media.map(function (m, j) { return mediaHtml(m, j, basePath); }).join('');
+    var sub = block.subtitulo && block.subtitulo !== '/.' ? block.subtitulo : '';
+    var id = (idPrefix || 'bit') + '-' + i;
+    return (
+      '<article class="camino-step bit-entry" id="' + esc(id) + '">' +
+        '<div class="camino-step-rail" aria-hidden="true">' +
+          '<span class="camino-num">' + padStep(i + 1) + '</span>' +
+        '</div>' +
+        '<div class="camino-step-body">' +
+          '<header class="bit-head">' +
+            (block.fecha ? '<time class="bit-date">' + esc(block.fecha) + '</time>' : '') +
+            '<h3 class="bit-title">' + esc(block.titulo) + '</h3>' +
+            (sub ? '<p class="bit-sub">' + esc(sub) + '</p>' : '') +
+          '</header>' +
+          (items ? '<div class="bit-media">' + items + '</div>' : '') +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function renderCamino(chapters, root) {
+    if (!root || !chapters || !chapters.length) return Promise.resolve();
+
+    root.innerHTML = chapters.map(function (chapter, ci) {
+      var data = chapter.data || {};
+      var entries = data.entries || [];
+      var name = data.name || chapter.key;
+      var slug = data.slug || chapter.key;
+      var span = dateSpan(entries);
+      var n = entries.length;
+      var steps = entries.map(function (b, i) {
+        return caminoStepHtml(b, i, chapter.base || '', 'paso-' + (chapter.key || ci));
+      }).join('');
+
+      return (
+        '<section class="camino-chapter proj-' + esc(slug) + '" id="camino-' + esc(chapter.key) + '">' +
+          '<header class="camino-chapter-head">' +
+            '<div class="camino-chapter-copy">' +
+              '<span class="modality">Capítulo ' + padStep(ci + 1) + ' · ' + esc(name) + '</span>' +
+              '<h2 class="camino-chapter-title">' + esc(name) + '</h2>' +
+              (chapter.blurb ? '<p class="camino-chapter-blurb">' + esc(chapter.blurb) + '</p>' : '') +
+              '<div class="camino-chapter-meta">' +
+                (span ? '<span class="spec">' + esc(span) + '</span>' : '') +
+                '<span class="spec">' + n + (n === 1 ? ' paso' : ' pasos') + '</span>' +
+              '</div>' +
+              (chapter.projectHref
+                ? '<a class="bit-project-link" href="' + esc(chapter.projectHref) + '">Ver proyecto<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'
+                : '') +
+            '</div>' +
+            (chapter.cover
+              ? '<figure class="camino-chapter-cover"><img src="' + esc(chapter.cover) + '" alt="" loading="lazy" decoding="async"></figure>'
+              : '') +
+          '</header>' +
+          '<div class="camino-steps" id="camino-steps-' + ci + '">' + steps + '</div>' +
+        '</section>'
+      );
+    }).join('');
+
+    var containers = root.querySelectorAll('.bit-media');
+    return Promise.all(Array.prototype.map.call(containers, applyLayout)).then(function () {
+      root.classList.add('bit-ready');
+    });
+  }
+
   function initProjectPage() {
     var root = document.getElementById('bitacora');
     if (!root || !window.ViamBitacoraProject) return;
@@ -194,6 +273,7 @@
   window.ViamBitacora = {
     render: renderBitacora,
     renderGlobal: renderGlobal,
+    renderCamino: renderCamino,
   };
 
   if (document.readyState === 'loading') {

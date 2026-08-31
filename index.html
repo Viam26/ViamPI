@@ -11,7 +11,7 @@
   /* Aplica el tema guardado antes de pintar para evitar el parpadeo */
   (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
-<link rel="stylesheet" href="site.css?v=3">
+<link rel="stylesheet" href="site.css?v=4">
 </head>
 <body>
 
@@ -150,9 +150,39 @@
         <p class="eyebrow">El proceso</p>
         <h2>Bitácora del camino</h2>
       </div>
-      <p>ViamPulse, ViamVision e ICARO — del primer boceto al prototipo final.</p>
+      <p>Un resumen del taller. Si te interesa el proceso completo, entra a verlo.</p>
     </div>
-    <div id="bitacora-global-root"></div>
+
+    <article class="camino-summary">
+      <div class="camino-summary-text">
+        <span class="modality">Taller · 2026</span>
+        <h3>Así se construyó Viam</h3>
+        <p>Del primer boceto al prototipo final: circuitos, chasis, pruebas y detalles de ViamPulse, ViamVision e ICARO. El camino completo está en fotos y videos.</p>
+        <div class="specs">
+          <span class="spec">3 proyectos</span>
+          <span class="spec">15 pasos</span>
+          <span class="spec">Feb — Ago 2026</span>
+        </div>
+        <a class="btn primary" href="camino/">Ver el camino
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="camino-summary-mosaic" aria-hidden="true">
+        <figure class="camino-tile pulse">
+          <img src="viampulse/bitacora/VP5.jpeg" alt="" width="640" height="480" loading="lazy">
+          <figcaption><i class="p"></i>ViamPulse</figcaption>
+        </figure>
+        <figure class="camino-tile vision">
+          <img src="viamvision/bitacora/VV2.jpeg" alt="" width="640" height="480" loading="lazy">
+          <figcaption><i class="v"></i>ViamVision</figcaption>
+        </figure>
+        <figure class="camino-tile icaro">
+          <img src="icaro/bitacora/ICARO%234.jpeg" alt="" width="640" height="480" loading="lazy">
+          <figcaption><i class="i"></i>ICARO</figcaption>
+        </figure>
+      </div>
+    </article>
   </div>
 </section>
 </main>
@@ -310,22 +340,6 @@
   window.addEventListener('resize', resize);
   start();
 })();
-</script>
-<script src="viampulse/bitacora/entries.js"></script>
-<script src="viamvision/bitacora/entries.js"></script>
-<script src="icaro/bitacora/entries.js"></script>
-<script src="bitacora.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  if (!window.ViamBitacora || !window.ViamBitacoraData) return;
-  var root = document.getElementById('bitacora-global-root');
-  if (!root) return;
-  ViamBitacora.renderGlobal([
-    ViamBitacoraData.viampulse,
-    ViamBitacoraData.viamvision,
-    ViamBitacoraData.icaro,
-  ], root);
-});
 </script>
 <script src="site.js"></script>
 </body>

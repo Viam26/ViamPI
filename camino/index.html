@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El camino — Bitácora · Viam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+  (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../site.css?v=4">
+</head>
+<body class="camino-page">
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="back" href="../#bitacora-global">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Volver
+    </a>
+    <div class="nav-right">
+      <a class="brand" href="../"><span class="dot"></span>Viam</a>
+      <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
+        <span class="tt-track">
+          <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="tt-thumb"><span class="tt-rays" aria-hidden="true"></span></span>
+        </span>
+      </button>
+      <span class="nav-tag">El camino</span>
+    </div>
+  </div>
+</nav>
+
+<section class="camino-hero">
+  <div class="wrap camino-hero-in">
+    <div class="camino-hero-copy">
+      <p class="eyebrow">El proceso · Bitácora</p>
+      <h1 class="camino-title">El camino<em>.</em></h1>
+      <p class="camino-lede">Cómo se hicieron ViamPulse, ViamVision e ICARO: del primer boceto al prototipo que ves hoy. Cada paso con fotos y videos del taller.</p>
+    </div>
+    <div class="camino-hero-mosaic" aria-hidden="true">
+      <figure class="hero-tile pulse">
+        <img src="../viampulse/bitacora/VP5.jpeg" alt="" width="640" height="480" loading="eager">
+        <figcaption><i></i>ViamPulse</figcaption>
+      </figure>
+      <figure class="hero-tile vision">
+        <img src="../viamvision/bitacora/VV2.jpeg" alt="" width="640" height="480" loading="eager">
+        <figcaption><i></i>ViamVision</figcaption>
+      </figure>
+      <figure class="hero-tile icaro">
+        <img src="../icaro/bitacora/ICARO%234.jpeg" alt="" width="640" height="480" loading="eager">
+        <figcaption><i></i>ICARO</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<nav class="camino-jump wrap" aria-label="Ir a un proyecto">
+  <a class="camino-jump-link pulse" href="#camino-pulse"><i></i>ViamPulse</a>
+  <a class="camino-jump-link vision" href="#camino-vision"><i></i>ViamVision</a>
+  <a class="camino-jump-link icaro" href="#camino-icaro"><i></i>ICARO</a>
+</nav>
+
+<main class="camino-main">
+  <div class="wrap">
+    <div id="camino-root"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap colophon">
+    <span>© 2026 Viam</span>
+    <span>Hardware y software de código abierto</span>
+  </div>
+</footer>
+
+<script src="../viampulse/bitacora/entries.js"></script>
+<script src="../viamvision/bitacora/entries.js"></script>
+<script src="../icaro/bitacora/entries.js"></script>
+<script src="../bitacora.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (!window.ViamBitacora || !window.ViamBitacoraData) return;
+  var root = document.getElementById('camino-root');
+  if (!root) return;
+
+  function revealCamino() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = root.querySelectorAll('.camino-chapter-head, .camino-step');
+    if (!items.length) return;
+    if (reduce || !('IntersectionObserver' in window)) {
+      for (var i = 0; i < items.length; i++) items[i].classList.add('in');
+      return;
+    }
+    document.documentElement.classList.add('has-reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '40px 0px -2% 0px' });
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    for (var j = 0; j < items.length; j++) {
+      var el = items[j];
+      el.classList.add('reveal-item');
+      var rect = el.getBoundingClientRect();
+      if (rect.top < vh * 0.98 && rect.bottom > 0) {
+        el.classList.add('in');
+      } else {
+        io.observe(el);
+      }
+    }
+  }
+
+  ViamBitacora.renderCamino([
+    {
+      key: 'pulse',
+      data: ViamBitacoraData.viampulse,
+      base: '../viampulse/bitacora/',
+      projectHref: '../viampulse/',
+      blurb: 'Del circuito sobre la mesa a la caja final del estetoscopio digital.',
+      cover: '../viampulse/bitacora/VP5.jpeg',
+    },
+    {
+      key: 'vision',
+      data: ViamBitacoraData.viamvision,
+      base: '../viamvision/bitacora/',
+      projectHref: '../viamvision/',
+      blurb: 'Circuitos, chasis, apps y el carril que da forma al ecógrafo.',
+      cover: '../viamvision/bitacora/VV2.jpeg',
+    },
+    {
+      key: 'icaro',
+      data: ViamBitacoraData.icaro,
+      base: '../icaro/bitacora/',
+      projectHref: '../icaro/',
+      blurb: 'Bocetos, motores, base y los detalles que convierten a ICARO en robot.',
+      cover: '../icaro/bitacora/ICARO%234.jpeg',
+    },
+  ], root).then(revealCamino);
+});
+</script>
+<script src="../site.js"></script>
+</body>
+</html>
