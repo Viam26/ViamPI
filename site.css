@@ -248,7 +248,18 @@ nav{
 }
 .lede{font-size:clamp(18px,2.4vw,25px);line-height:1.45;color:var(--text-dim);max-width:620px;margin-top:26px;letter-spacing:-0.015em}
 .lede b{color:var(--text);font-weight:600}
-.hero-actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:34px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:34px;align-items:center}
+.hero-actions .btn{align-self:center}
+@media (prefers-reduced-motion:no-preference){
+  .hero-play .play-pin-go{
+    animation:hero-play-orb 2.4s var(--ease) infinite;
+  }
+  .hero-play:hover .play-pin-go{animation:none}
+}
+@keyframes hero-play-orb{
+  0%,100%{box-shadow:0 10px 24px -12px rgba(46,245,194,.95), inset 0 1px 0 rgba(255,255,255,.35); transform:scale(1)}
+  50%{box-shadow:0 14px 30px -10px rgba(46,245,194,1), 0 0 0 8px rgba(126,200,184,.12), inset 0 1px 0 rgba(255,255,255,.35); transform:scale(1.04)}
+}
 .hero-meta{display:flex;flex-wrap:wrap;gap:11px;margin-top:30px}
 .chip{
   font-family:var(--mono);font-size:12.5px;letter-spacing:.01em;color:var(--text-dim);
@@ -1096,4 +1107,5 @@ html[data-theme="light"] .play-pin-go{color:#fff}
   .has-reveal .reveal-item{opacity:1!important;transform:none!important}
   .hero-in>*{opacity:1!important}
   .play-pin:hover{transform:none}
+  .hero-play,.hero-play .play-pin-go{animation:none!important}
 }
