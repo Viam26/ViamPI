@@ -5,10 +5,11 @@
    está en las reglas de Firestore (firestore.rules). */
 
 window.VIAM_FIREBASE = {
-  apiKey: "PEGA_AQUI_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:xxxxxxxx",
+  apiKey: "AIzaSyA4p_Y8dHIbfFyML4xqc8GLwG-yhqbiCHc",
+  authDomain: "viam-e93e0.firebaseapp.com",
+  projectId: "viam-e93e0",
+  storageBucket: "viam-e93e0.firebasestorage.app",
+  messagingSenderId: "396072652863",
+  appId: "1:396072652863:web:9135a5ce389c3fd629288a",
+  measurementId: "G-R9LBTTSH59"
 };
