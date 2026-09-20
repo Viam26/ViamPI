@@ -980,10 +980,97 @@ html[data-theme="light"] .tt-stars{opacity:0}
 @media (prefers-reduced-motion:no-preference){ html[data-theme="light"] .tt-rays{animation:tt-spin 10s linear infinite} }
 
 /* --------------------------------------------------------------------------
+   PLAY PIN — CTA estilo Pinterest para ICARO Climb
+   -------------------------------------------------------------------------- */
+.play-pin{
+  --pin-bg:linear-gradient(145deg, rgba(46,245,194,.22), rgba(126,200,184,.08) 45%, var(--surface));
+  position:relative;display:inline-flex;align-items:center;gap:14px;
+  padding:10px 14px 10px 10px;border-radius:28px;
+  background:var(--pin-bg);
+  border:1px solid color-mix(in srgb, var(--icaro) 42%, var(--line));
+  box-shadow:var(--shadow), 0 0 0 1px rgba(255,255,255,.03) inset;
+  color:var(--text);text-decoration:none;overflow:hidden;
+  isolation:isolate;max-width:100%;
+  transition:transform .35s var(--spring), box-shadow .35s var(--ease), border-color .3s var(--ease);
+}
+.play-pin-shine{
+  position:absolute;inset:-40% -60%;z-index:0;pointer-events:none;
+  background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.18) 48%, transparent 62%);
+  transform:translateX(-35%) rotate(8deg);opacity:.55;
+}
+.play-pin-thumb,.play-pin-copy,.play-pin-go{position:relative;z-index:1}
+.play-pin-thumb{
+  position:relative;flex:0 0 auto;width:64px;height:64px;border-radius:20px;
+  overflow:hidden;background:radial-gradient(circle at 35% 30%, #1a3a34, #081018 70%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12), 0 10px 22px -14px rgba(46,245,194,.7);
+}
+.play-pin-thumb img{
+  width:100%;height:100%;object-fit:contain;object-position:center 8%;
+  transform:scale(1.15);filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  transition:transform .45s var(--spring);
+}
+.play-pin-live{
+  position:absolute;left:7px;bottom:7px;
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:#04120f;background:var(--icaro);padding:3px 7px;border-radius:999px;
+  box-shadow:0 4px 10px -4px rgba(46,245,194,.8);
+}
+.play-pin-copy{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0;padding-right:4px}
+.play-pin-kicker{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-faint);
+}
+.play-pin-title{
+  font-size:22px;font-weight:800;letter-spacing:-0.035em;line-height:1.05;
+  background:linear-gradient(120deg, var(--text) 20%, var(--icaro));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.play-pin-sub{font-size:13.5px;font-weight:600;color:var(--text-dim)}
+.play-pin-go{
+  flex:0 0 auto;width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;margin-left:2px;
+  color:#04120f;background:var(--icaro);
+  box-shadow:0 10px 24px -12px rgba(46,245,194,.95), inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .35s var(--spring), box-shadow .3s var(--ease);
+}
+.play-pin-go svg{margin-left:2px}
+.play-pin:hover{
+  transform:translateY(-4px) rotate(-1.2deg);
+  border-color:color-mix(in srgb, var(--icaro) 70%, var(--line));
+  box-shadow:var(--shadow-lg), 0 18px 40px -24px rgba(46,245,194,.55);
+}
+.play-pin:hover .play-pin-thumb img{transform:scale(1.28) translateY(-2px)}
+.play-pin:hover .play-pin-go{transform:scale(1.08) rotate(8deg)}
+.play-pin:hover .play-pin-shine{
+  animation:play-pin-sweep 1.1s var(--ease) both;
+}
+.play-pin:focus-visible{
+  outline:2px solid var(--icaro);outline-offset:3px;
+}
+@keyframes play-pin-sweep{
+  from{transform:translateX(-45%) rotate(8deg)}
+  to{transform:translateX(45%) rotate(8deg)}
+}
+html[data-theme="light"] .play-pin{
+  --pin-bg:linear-gradient(145deg, rgba(47,158,138,.16), rgba(255,255,255,.92) 48%, var(--surface));
+}
+html[data-theme="light"] .play-pin-title{
+  background:linear-gradient(120deg, #1d1d1f 10%, var(--icaro));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+html[data-theme="light"] .play-pin-live,
+html[data-theme="light"] .play-pin-go{color:#fff}
+@media (max-width:520px){
+  .play-pin{width:100%;justify-content:flex-start}
+  .play-pin-go{margin-left:auto}
+}
+
+/* --------------------------------------------------------------------------
    MOVIMIENTO REDUCIDO
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .has-reveal .reveal-item{opacity:1!important;transform:none!important}
   .hero-in>*{opacity:1!important}
+  .play-pin:hover{transform:none}
 }
