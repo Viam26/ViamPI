@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ícaro · Escala con datos · Viam Medical</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Mono:wght@500;600&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="back-site" href="../">← Volver a ICARO</a>
+  <div id="app" class="arcade">
+    <div class="scanlines"></div>
+    <canvas id="game"></canvas>
+
+    <div id="hud" class="hidden">
+      <div class="chip left">
+        <img src="assets/icaro.png" alt="" />
+        <div>
+          <small id="zone-name">Sala de espera</small>
+          <b id="height-num">0 m</b>
+        </div>
+      </div>
+      <div class="chip mid">
+        <small>Energía de datos · combo <b id="combo-num">x1</b></small>
+        <div class="ebar"><i id="energy-fill"></i></div>
+        <b id="energy-num">100</b>
+      </div>
+      <div class="chip right">
+        <small>Tiempo</small>
+        <b id="time-num">3:00</b>
+      </div>
+      <div class="chip scorechip">
+        <small>Score</small>
+        <b id="score-num">0</b>
+      </div>
+      <button id="btn-music" class="ask music" type="button">♪ Música</button>
+      <div class="rail" id="rail"></div>
+      <button id="btn-ask" class="ask" type="button">Pregunta</button>
+      <footer class="keys">
+        <kbd>←</kbd><kbd>→</kbd> correr
+        <kbd>↑</kbd> o <kbd>Espacio</kbd> saltar
+      </footer>
+    </div>
+
+    <section id="screen-menu" class="screen">
+      <img class="hero" src="assets/icaro.png" alt="Ícaro" />
+      <p class="eyebrow">INSERT COIN · VIAM MEDICAL</p>
+      <h1>ICARO<br><em>CLIMB</em></h1>
+      <p class="tag">3:00 · llega a la cima o GAME OVER</p>
+      <p class="lede">
+        Corre, salta y responde. Pulse, Vision e Ícaro te recargan.
+        Si el tiempo llega a cero, se acabó. Si ganas, pon tu nombre en el ranking.
+      </p>
+      <button id="btn-play" class="btn go" type="button">PRESS START</button>
+      <p class="hint">24 preguntas del proyecto</p>
+      <div class="board menu-board" id="menu-board"></div>
+    </section>
+
+    <section id="screen-pause" class="screen dim hidden">
+      <h2>Pausa</h2>
+      <button id="btn-resume" class="btn go" type="button">Seguir</button>
+      <button id="btn-menu" class="btn ghost" type="button">Menú</button>
+    </section>
+
+    <section id="screen-end" class="screen hidden">
+      <img class="hero small" src="assets/icaro.png" alt="" />
+      <p class="eyebrow" id="end-kicker">Cima</p>
+      <h2 id="end-title">¡Ícaro llegó!</h2>
+      <div class="stars" id="end-stars">★★★</div>
+      <p class="end-points" id="end-points">0</p>
+      <p id="end-text"></p>
+      <form id="score-form" class="score-form" autocomplete="off">
+        <label for="score-name">¿Quién hizo este puntaje?</label>
+        <div class="row">
+          <input id="score-name" maxlength="18" placeholder="Tu nombre" />
+          <button id="btn-save" class="btn go" type="submit">Guardar</button>
+        </div>
+        <p class="saved-ok hidden" id="saved-ok">Quedó en el mural.</p>
+      </form>
+      <div class="board" id="end-board"></div>
+      <button id="btn-again" class="btn ghost" type="button">Otra subida</button>
+    </section>
+
+    <div id="qmodal" class="qmodal hidden">
+      <div class="qcard">
+        <p class="qkit">VIAM MEDICAL</p>
+        <h2 id="q-text"></h2>
+        <div id="q-answers" class="qgrid"></div>
+        <p id="q-feed" class="qfeed hidden"></p>
+      </div>
+    </div>
+  </div>
+  <script src="questions.js"></script>
+  <script src="music.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
