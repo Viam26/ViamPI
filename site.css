@@ -1107,5 +1107,5 @@ html[data-theme="light"] .play-pin-go{color:#fff}
   .has-reveal .reveal-item{opacity:1!important;transform:none!important}
   .hero-in>*{opacity:1!important}
   .play-pin:hover{transform:none}
-  .hero-play,.hero-play .play-pin-go{animation:none!important}
+  .hero-play .play-pin-go{animation:none!important}
 }
