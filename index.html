@@ -11,13 +11,15 @@
   /* Aplica el tema guardado antes de pintar para evitar el parpadeo */
   (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
-<link rel="stylesheet" href="site.css?v=4">
+<link rel="stylesheet" href="site.css?v=6">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
 
 <nav>
   <div class="wrap nav-in">
-    <a class="brand" href="./"><span class="dot"></span>Viam</a>
+    <a class="brand" href="./"><img class="brand-mark" src="brand/logo-mark-64.png" width="34" height="34" alt="">Viam</a>
     <div class="nav-links">
       <a href="#proyectos">Proyectos</a>
       <a href="#bitacora-global">Bitácora</a>
@@ -38,7 +40,10 @@
   <div class="hero-fade"></div>
   <div class="wrap hero-in">
     <p class="eyebrow">3er año · Bachillerato en Electrónica</p>
-    <h1 class="wordmark">Viam<em>.</em></h1>
+    <div class="hero-brand">
+      <img class="hero-mark" src="brand/logo-mark-256.png" width="128" height="128" alt="">
+      <h1 class="wordmark">Viam<em>.</em></h1>
+    </div>
     <p class="lede">Instrumentos de diagnóstico y asistencia médica <b>de código abierto</b>, asistidos por <b>inteligencia artificial</b>. Tres proyectos hechos por estudiantes de electrónica que llevan la señal del cuerpo — y el apoyo en sala — a la práctica.</p>
     <div class="hero-actions">
       <a class="btn primary" href="#proyectos">Ver los proyectos
@@ -253,7 +258,7 @@
     </button>
 
     <div class="colophon">
-      <span>© 2026 Viam</span>
+      <span class="colophon-brand"><img src="brand/logo-mark-48.png" width="22" height="22" alt="">© 2026 Viam</span>
       <span>Hardware y software de código abierto</span>
     </div>
   </div>
