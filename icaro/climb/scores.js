@@ -48,8 +48,7 @@
     }
     return col
       .orderBy("points", "desc")
-      .orderBy("time", "asc")
-      .limit(lim)
+      .limit(Math.max(lim * 3, 24))
       .get()
       .then(function (snap) {
         var rows = [];
@@ -67,7 +66,7 @@
             at: d.at,
           });
         });
-        return rows;
+        return sortBoard(rows).slice(0, lim);
       })
       .catch(function (err) {
         console.warn("[ICARO Climb] Firestore read falló, uso local:", err && err.message);

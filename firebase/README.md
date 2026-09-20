@@ -16,8 +16,8 @@ Si ya creaste Firestore (modo production o test):
 
 1. Ve a **Firestore Database → Rules**.
 2. Pega el contenido de `firestore.rules` y publica.
-3. (Opcional) Índices: el query ordena por `points` desc + `time` asc.
-   Si Firebase pide un índice compuesto al guardar/leer, usa el link que sale en la consola del navegador.
+3. (Opcional) El mural ordena por `points` en Firestore y desempata por `time` en el cliente,
+   así no hace falta un índice compuesto.
 
 Colección usada:
 
