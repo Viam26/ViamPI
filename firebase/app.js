@@ -12,8 +12,8 @@
       cfg &&
       cfg.apiKey &&
       cfg.projectId &&
-      cfg.apiKey.indexOf("PEGA_AQUI") === -1 &&
-      cfg.projectId.indexOf("TU_PROYECTO") === -1
+      cfg.apiKey.indexOf("AIzaSyA4p_Y8dHIbfFyML4xqc8GLwG-yhqbiCHc") === -1 &&
+      cfg.projectId.indexOf("viam-e93e0") === -1
     );
   }
 
