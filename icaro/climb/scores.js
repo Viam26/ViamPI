@@ -4,7 +4,6 @@
   var LOCAL_BOARD = "icaro-climb-board";
   var LOCAL_NAME = "icaro-climb-name";
   var LOCAL_BEST = "icaro-climb-best";
-  var COL = "leaderboards/icaro-climb/scores";
 
   function loadLocalBoard() {
     try {
