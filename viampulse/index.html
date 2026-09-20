@@ -11,7 +11,9 @@
   /* Aplica el tema guardado antes de pintar para evitar el parpadeo */
   (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
-<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../site.css?v=6">
+<link rel="icon" href="../favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 </head>
 <body class="proj-pulse">
 
@@ -22,7 +24,7 @@
       Volver
     </a>
     <div class="nav-right">
-      <a class="brand" href="../"><span class="dot"></span>Viam</a>
+      <a class="brand" href="../"><img class="brand-mark" src="../brand/logo-mark-64.png" width="34" height="34" alt="">Viam</a>
       <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
         <span class="tt-track">
           <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
@@ -151,7 +153,7 @@
 
 <footer>
   <div class="wrap colophon">
-    <span>© 2026 Viam</span>
+    <span class="colophon-brand"><img src="../brand/logo-mark-48.png" width="22" height="22" alt="">© 2026 Viam</span>
     <span>Hardware y software de código abierto</span>
   </div>
 </footer>

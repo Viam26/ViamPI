@@ -7,6 +7,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; font-family: Outfit, system-ui, sans-serif; }
+.back-site img{width:18px;height:18px;vertical-align:-3px;margin-right:6px}
 .back-site{
   position:fixed;top:14px;left:14px;z-index:40;
   font-family:Outfit,system-ui,sans-serif;font-size:13px;font-weight:700;

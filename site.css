@@ -141,9 +141,17 @@ nav{
   border-bottom:1px solid var(--line);
 }
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:18px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-0.02em}
-.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 0 4px var(--accent-soft), 0 0 12px var(--accent)}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-0.02em}
+.brand-mark{
+  width:34px;height:34px;flex:none;display:block;object-fit:contain;
+  filter:drop-shadow(0 4px 10px rgba(70,160,190,.28));
+  transition:transform .35s var(--spring), filter .3s var(--ease);
+}
+.brand:hover .brand-mark{transform:scale(1.06) rotate(-3deg);
+  filter:drop-shadow(0 8px 16px rgba(70,160,190,.4))}
+.brand .dot{display:none} /* legacy — reemplazado por .brand-mark */
+.colophon-brand{display:inline-flex;align-items:center;gap:8px}
+.colophon-brand img{width:22px;height:22px;object-fit:contain;opacity:.92}
 .nav-links{display:flex;align-items:center;gap:clamp(14px,2.4vw,28px)}
 .nav-links a{color:var(--text-dim);font-size:15px;font-weight:500;transition:color .2s var(--ease)}
 .nav-links a:hover{color:var(--text)}
@@ -215,6 +223,17 @@ nav{
   background:linear-gradient(180deg,transparent 0%,transparent 52%,var(--bg) 100%)}
 .hero-in{position:relative;z-index:2;max-width:900px}
 .hero-in .eyebrow{margin-bottom:22px}
+.hero-brand{
+  display:flex;align-items:center;gap:clamp(14px,3vw,28px);
+  margin-bottom:4px;
+}
+.hero-brand .hero-mark{
+  width:clamp(72px,12vw,128px);height:clamp(72px,12vw,128px);
+  object-fit:contain;flex:none;
+  filter:drop-shadow(0 18px 36px rgba(70,160,190,.35));
+  animation:floaty 6.5s ease-in-out infinite;
+}
+.hero-brand .wordmark{margin:0}
 .wordmark{
   font-size:clamp(72px,15vw,168px);font-weight:800;letter-spacing:-0.055em;line-height:.9;
 }
@@ -222,6 +241,10 @@ nav{
   font-style:normal;
   background:linear-gradient(120deg,var(--pulse),var(--vision) 55%,var(--icaro));
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+@media(max-width:520px){
+  .hero-brand{gap:12px}
+  .hero-brand .hero-mark{width:64px;height:64px}
 }
 .lede{font-size:clamp(18px,2.4vw,25px);line-height:1.45;color:var(--text-dim);max-width:620px;margin-top:26px;letter-spacing:-0.015em}
 .lede b{color:var(--text);font-weight:600}
