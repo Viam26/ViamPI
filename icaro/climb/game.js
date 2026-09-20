@@ -15,8 +15,8 @@
 
   const TIME_LIMIT = 180;
   const BEST_KEY = "icaro-climb-best";
-  const BOARD_KEY = "icaro-climb-board";
   const NAME_KEY = "icaro-climb-name";
+  const Scores = window.IcaroClimbScores;
   const keys = Object.create(null);
   const hud = {
     zone: document.getElementById("zone-name"),
@@ -66,15 +66,16 @@
     best: Number(localStorage.getItem(BEST_KEY) || 0),
   };
   function loadBoard() {
-    try { return JSON.parse(localStorage.getItem(BOARD_KEY) || "[]"); }
+    if (Scores && Scores.loadLocalBoard) return Scores.loadLocalBoard();
+    try { return JSON.parse(localStorage.getItem("icaro-climb-board") || "[]"); }
     catch { return []; }
   }
   function pointsNow() {
     const sec = Math.round(state.time);
     return Math.max(0, state.right * 120 + state.maxCombo * 35 - state.wrong * 15 + Math.round(state.left));
   }
-  function renderBoard(el, limit) {
-    const board = loadBoard().slice(0, limit || 8);
+  function renderBoard(el, limit, rows) {
+    const board = (rows || loadBoard()).slice(0, limit || 8);
     if (!board.length) {
       el.innerHTML = `<div class="row"><span></span><span>Aún no hay nombres. ¡Sé el primero!</span><span></span><span></span></div>`;
       return;
@@ -83,7 +84,20 @@
       `<div class="row"><span class="n">${i + 1}</span><span>${r.name}</span><span class="pts">${r.points}</span><span class="tm">${r.time}s</span></div>`
     ).join("");
   }
-  renderBoard(document.getElementById("menu-board"), 5);
+  function refreshBoards() {
+    const menu = document.getElementById("menu-board");
+    const end = document.getElementById("end-board");
+    if (!Scores || !Scores.fetchBoard) {
+      renderBoard(menu, 5);
+      if (end) renderBoard(end, 8);
+      return Promise.resolve();
+    }
+    return Scores.fetchBoard(8).then((rows) => {
+      renderBoard(menu, 5, rows);
+      if (end && !end.closest(".hidden")) renderBoard(end, 8, rows);
+    });
+  }
+  refreshBoards();
   const lastName = localStorage.getItem(NAME_KEY) || "";
   const nameInput = document.getElementById("score-name");
   if (lastName) nameInput.value = lastName;
@@ -192,6 +206,7 @@
       ? `${fmtTime(state.left)} restantes · ${state.right} bien · combo x${state.maxCombo}`
       : "Se acabó el tiempo. Ícaro no llegó a la cima.";
     renderBoard(document.getElementById("end-board"), 8);
+    refreshBoards();
     setTimeout(() => nameInput.focus(), 200);
   }
   function win() { finish(true); }
@@ -207,23 +222,37 @@
     if (state.savedRun) return;
     const name = (nameInput.value || "").trim().slice(0, 18) || "Anónimo";
     nameInput.value = name;
-    localStorage.setItem(NAME_KEY, name);
-    const board = loadBoard();
-    board.push({
+    const entry = {
       name,
       points: state.points,
       time: Math.round(state.time),
       right: state.right,
       wrong: state.wrong,
       combo: state.maxCombo,
-      at: Date.now(),
-    });
+      won: !!state.won,
+    };
+    const ok = document.getElementById("saved-ok");
+    const btn = document.getElementById("btn-save");
+    if (btn) btn.disabled = true;
+    const done = (remote) => {
+      state.savedRun = true;
+      ok.textContent = remote
+        ? "Quedó en el mural global."
+        : "Guardado en este dispositivo (Firebase no configurado o sin red).";
+      ok.classList.remove("hidden");
+      refreshBoards();
+      if (btn) btn.disabled = false;
+    };
+    if (Scores && Scores.submitScore) {
+      Scores.submitScore(entry).then((res) => done(!!res.remote));
+      return;
+    }
+    localStorage.setItem(NAME_KEY, name);
+    const board = loadBoard();
+    board.push({ ...entry, at: Date.now() });
     board.sort((a, b) => b.points - a.points || a.time - b.time);
-    localStorage.setItem(BOARD_KEY, JSON.stringify(board.slice(0, 12)));
-    state.savedRun = true;
-    document.getElementById("saved-ok").classList.remove("hidden");
-    renderBoard(document.getElementById("end-board"), 8);
-    renderBoard(document.getElementById("menu-board"), 5);
+    localStorage.setItem("icaro-climb-board", JSON.stringify(board.slice(0, 12)));
+    done(false);
   }
 
   document.getElementById("btn-play").onclick = start;

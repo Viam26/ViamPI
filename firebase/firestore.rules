@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* Ranking público de ICARO Climb
+       - cualquiera puede leer el mural
+       - cualquiera puede crear un score válido
+       - nadie edita ni borra desde el cliente */
+    match /leaderboards/icaro-climb/scores/{scoreId} {
+      allow read: if true;
+      allow create: if isValidClimbScore();
+      allow update, delete: if false;
+    }
+
+    /* Reserva para otras webs / apps del mismo proyecto */
+    match /apps/{appId}/{document=**} {
+      allow read, write: if false; // abre reglas por app cuando las integres
+    }
+
+    function isValidClimbScore() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'points', 'time', 'right', 'wrong', 'combo', 'won', 'at', 'source'])
+        && d.name is string
+        && d.name.size() > 0
+        && d.name.size() <= 18
+        && d.points is number
+        && d.points >= 0
+        && d.points <= 50000
+        && d.time is number
+        && d.time >= 0
+        && d.time <= 600
+        && d.right is number
+        && d.wrong is number
+        && d.combo is number
+        && d.won is bool
+        && d.at is number
+        && d.source == 'icaro-climb';
+    }
+  }
+}
