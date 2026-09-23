@@ -12,9 +12,145 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
-    /* Reserva para otras webs / apps del mismo proyecto */
+    /* Registros clínicos de ICARO.
+       Colección: apps/icaro/consultas/{sqliteId}
+       Lectura y escritura solo para personal (email en la lista de abajo
+       o en apps/icaro/meta/access.emails). Sin login, nadie entra. */
+    match /apps/icaro/consultas/{consultaId} {
+      allow read: if isIcaroStaff();
+      allow create: if isIcaroStaff() && isValidConsulta(consultaId);
+      allow update: if isIcaroStaff()
+        && isValidConsulta(consultaId)
+        && request.resource.data.sqlite_id == resource.data.sqlite_id;
+      allow delete: if false;
+    }
+
+    /* Lista extra de correos. La crea el personal base (o la consola).
+       emails: array de strings en minúsculas. */
+    match /apps/icaro/meta/{docId} {
+      allow read: if docId == 'access' && isIcaroStaff();
+      allow create, update: if docId == 'access'
+        && isBootstrapStaff()
+        && request.resource.data.keys().hasOnly(['emails'])
+        && request.resource.data.emails is list
+        && request.resource.data.emails.size() <= 40;
+      allow delete: if false;
+    }
+
+    /* El resto de apps sigue cerrado. */
     match /apps/{appId}/{document=**} {
-      allow read, write: if false; // abre reglas por app cuando las integres
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email is string;
+    }
+
+    function bootstrapEmails() {
+      return [
+        'medicalviam@gmail.com'
+      ];
+    }
+
+    function isBootstrapStaff() {
+      return isSignedIn()
+        && request.auth.token.email.lower() in bootstrapEmails();
+    }
+
+    function extraEmails() {
+      let path = /databases/$(database)/documents/apps/icaro/meta/access;
+      return exists(path) ? get(path).data.get('emails', []) : [];
+    }
+
+    function isIcaroStaff() {
+      return isSignedIn() && (
+        request.auth.token.email.lower() in bootstrapEmails()
+        || request.auth.token.email.lower() in extraEmails()
+      );
+    }
+
+    function isValidConsulta(consultaId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'sqlite_id', 'origen', 'nombre', 'dui', 'edad', 'nivel', 'alarma',
+          'motivos', 'molestia', 'tiempo', 'intensidad', 'otros', 'condiciones',
+          'alergias', 'naturaleza', 'observacion', 'foto', 'temperatura', 'pulso',
+          'atendido', 'atendido_en', 'atendido_por', 'subido', 'fecha', 'fecha_ms',
+          'actualizado_en'
+        ])
+        && d.keys().hasAll([
+          'sqlite_id', 'origen', 'nombre', 'dui', 'nivel', 'fecha', 'fecha_ms',
+          'actualizado_en'
+        ])
+        && d.sqlite_id is int
+        && d.sqlite_id > 0
+        && d.sqlite_id < 1000000000000
+        && consultaId == string(d.sqlite_id)
+        && d.origen == 'icaro'
+        && d.nombre is string
+        && d.nombre.size() <= 120
+        && d.dui is string
+        && d.dui.size() <= 20
+        && d.nivel is string
+        && d.nivel.size() <= 20
+        && d.fecha is string
+        && d.fecha.size() <= 80
+        && d.fecha_ms is number
+        && d.fecha_ms >= 1577836800000
+        && d.fecha_ms <= 4102444800000
+        && d.actualizado_en is number
+        && d.actualizado_en >= 1577836800000
+        && d.actualizado_en <= 4102444800000
+        && optEdad(d)
+        && optAlarma(d)
+        && optString(d, 'motivos', 4000)
+        && optString(d, 'molestia', 4000)
+        && optString(d, 'tiempo', 120)
+        && optString(d, 'intensidad', 40)
+        && optString(d, 'otros', 4000)
+        && optString(d, 'condiciones', 4000)
+        && optString(d, 'alergias', 4000)
+        && optString(d, 'naturaleza', 200)
+        && optString(d, 'observacion', 4000)
+        && optString(d, 'foto', 120000)
+        && optString(d, 'atendido_en', 80)
+        && optString(d, 'atendido_por', 120)
+        && optVital(d, 'temperatura')
+        && optVital(d, 'pulso')
+        && optFlag(d, 'atendido')
+        && optFlag(d, 'subido');
+    }
+
+    function optString(d, key, max) {
+      let v = d.get(key, null);
+      return v == null || (v is string && v.size() <= max);
+    }
+
+    function optFlag(d, key) {
+      let v = d.get(key, null);
+      return v == null || v is bool || v == 0 || v == 1;
+    }
+
+    function optEdad(d) {
+      let v = d.get('edad', null);
+      return v == null
+        || (v is int && v >= 0 && v <= 130)
+        || (v is string && v.size() <= 20);
+    }
+
+    function optAlarma(d) {
+      let v = d.get('alarma', null);
+      return v == null
+        || v is bool
+        || (v is string && v.size() <= 200)
+        || (v is number && v >= 0 && v <= 9999);
+    }
+
+    function optVital(d, key) {
+      let v = d.get(key, null);
+      return v == null
+        || (v is number && v >= 0 && v <= 300)
+        || (v is string && v.size() <= 20);
     }
 
     function isValidClimbScore() {

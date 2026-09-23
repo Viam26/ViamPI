@@ -3,6 +3,10 @@
 Sitio de Viam · https://viam26.github.io/ViamPI/  
 Dominio propio: **https://viam.es**
 
+Panel de registros de ICARO (personal, con login): **https://viam.es/app/**
+
+Ese enlace no necesita DNS nuevo: el sitio es un solo GitHub Pages y el `CNAME` ya es `viam.es`. Un subdominio `app.viam.es` no puede colgarse de este mismo sitio. Si más adelante se quiere aparte, hace falta otro proyecto de Pages y un CNAME `app` → `viam26.github.io`. Detalle en `firebase/README.md`.
+
 ## Configurar `viam.es` con GitHub Pages
 
 El sitio ya se publica desde la rama `main` (carpeta `/`). Falta enlazar el dominio en GitHub y apuntar el DNS del registrador.

@@ -36,17 +36,26 @@
     return db;
   }
 
+  function auth() {
+    if (!configured()) return null;
+    if (typeof firebase === "undefined" || typeof firebase.auth !== "function") return null;
+    init();
+    return firebase.auth();
+  }
+
   global.ViamFirebase = {
     configured: configured,
     init: init,
     db: function () {
       return init();
     },
-    /* Colecciones pensadas para crecer:
-       leaderboards/{gameId}/scores/{id}
-       apps/{appId}/...  (futuras webs) */
+    auth: auth,
+    /* Colecciones:
+       leaderboards/icaro-climb/scores/{id}   ranking público
+       apps/icaro/consultas/{sqliteId}        registros clínicos (solo personal) */
     paths: {
       climbScores: "leaderboards/icaro-climb/scores",
+      icaroConsultas: "apps/icaro/consultas",
     },
   };
 })(window);
