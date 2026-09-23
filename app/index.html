@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Registros ICARO — Viam</title>
+<link rel="canonical" href="https://viam.es/app/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  (function(){try{var t=localStorage.getItem('viam-theme');if(!t){t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<link rel="stylesheet" href="../site.css?v=7">
+<link rel="stylesheet" href="panel.css?v=1">
+<link rel="icon" href="../favicon.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+</head>
+<body class="proj-icaro app-body">
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="../"><img class="brand-mark" src="../brand/logo-mark-64.png" width="34" height="34" alt="">Viam</a>
+    <div class="nav-right">
+      <span class="app-user" id="who" hidden></span>
+      <button class="app-logout" id="logout" type="button" hidden>Salir</button>
+      <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
+        <span class="tt-track">
+          <span class="tt-stars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="tt-thumb"><span class="tt-rays" aria-hidden="true"></span></span>
+        </span>
+      </button>
+      <span class="nav-tag">Registros</span>
+    </div>
+  </div>
+</nav>
+
+<main id="gate" class="gate">
+  <div class="login-card">
+    <p class="eyebrow">ICARO · personal</p>
+    <h1>Registros</h1>
+    <p class="login-lede">Consultas que sube el robot. Hace falta una cuenta del personal: estos datos incluyen nombre y DUI.</p>
+    <p class="boot" id="boot">Comprobando sesión…</p>
+    <form id="login" hidden>
+      <label class="field">
+        <span>Correo</span>
+        <input id="email" name="email" type="email" autocomplete="username" inputmode="email" required maxlength="120">
+      </label>
+      <label class="field">
+        <span>Contraseña</span>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <p class="form-error" id="login-error" role="alert"></p>
+      <button class="btn primary login-submit" type="submit">Entrar</button>
+      <button class="text-btn" id="forgot" type="button">Olvidé mi contraseña</button>
+    </form>
+    <p class="login-note">En un equipo compartido, cierra sesión al terminar. No hay registro público de cuentas.</p>
+    <a class="back login-back" href="../icaro/">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Volver a ICARO
+    </a>
+  </div>
+</main>
+
+<main id="panel" class="panel-app" hidden>
+  <div class="wrap">
+    <div class="app-head">
+      <div>
+        <p class="eyebrow">ICARO · sala de espera</p>
+        <h1>Registros</h1>
+      </div>
+      <p class="live" id="live"><i></i> En vivo</p>
+    </div>
+
+    <p class="banner" id="banner" role="status" hidden></p>
+    <div class="stats" id="stats"></div>
+
+    <div class="toolbar">
+      <label class="search">
+        <span class="sr">Buscar</span>
+        <input id="q" type="search" placeholder="Buscar nombre o DUI" autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </label>
+      <div class="segs" id="nivel-segs" role="group" aria-label="Filtrar por nivel">
+        <button type="button" class="seg is-on" data-nivel="TODOS">Todos</button>
+        <button type="button" class="seg" data-nivel="ROJO">Rojo</button>
+        <button type="button" class="seg" data-nivel="AMARILLO">Amarillo</button>
+        <button type="button" class="seg" data-nivel="VERDE">Verde</button>
+      </div>
+      <div class="segs" id="atencion-segs" role="group" aria-label="Filtrar por atención">
+        <button type="button" class="seg is-on" data-atencion="TODOS">Todos</button>
+        <button type="button" class="seg" data-atencion="PENDIENTES">Pendientes</button>
+        <button type="button" class="seg" data-atencion="ATENDIDOS">Atendidos</button>
+      </div>
+    </div>
+
+    <div class="split">
+      <section class="list-card" aria-labelledby="list-title">
+        <div class="card-top">
+          <h2 id="list-title">Consultas</h2>
+          <span class="count" id="count"></span>
+        </div>
+        <div class="list-scroll" id="list"></div>
+      </section>
+      <section class="detail-card" id="detail" aria-live="polite"></section>
+    </div>
+
+    <p class="panel-foot">Los registros no se guardan en este navegador. Los escribe Icaro en Firestore (<span class="mono">apps/icaro/consultas</span>).</p>
+  </div>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore-compat.js"></script>
+<script src="../firebase/config.js"></script>
+<script src="../firebase/app.js"></script>
+<script src="panel.js?v=1"></script>
+<script src="../site.js"></script>
+</body>
+</html>
