@@ -137,7 +137,7 @@ h2 { font-size: 22px; }
   font-family: inherit; font-weight: 700; font-size: 15px;
   border-radius: 14px; padding: 12px 14px;
 }
-.qbtn:hover { background: #1e3a3a; }
+.qbtn:hover, .qbtn.pick { background: #1e3a3a; outline: 3px solid #1ad4a8; }
 .qbtn.ok { background: #2ef5c2; color: #081018; }
 .qbtn.bad { background: #ff3d7f; color: #fff; }
 .qfeed { margin-top: 12px; color: #b7c6d6; font-size: 14px; line-height: 1.4; }

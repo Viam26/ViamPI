@@ -18,6 +18,9 @@
   const NAME_KEY = "icaro-climb-name";
   const Scores = window.IcaroClimbScores;
   const keys = Object.create(null);
+  const pad = { left: false, right: false, jump: false };
+  const padPrev = Object.create(null);
+  let qNav = 0;
   const hud = {
     zone: document.getElementById("zone-name"),
     height: document.getElementById("height-num"),
@@ -348,6 +351,8 @@
       b.onclick = () => answer(o, b);
       hud.qans.appendChild(b);
     });
+    state.qPick = 0;
+    markPick();
     hud.qmodal.classList.remove("hidden");
     blip(520, 0.06);
   }
@@ -433,9 +438,9 @@
     state.bannerT = Math.max(0, state.bannerT - dt);
     state.askCool = Math.max(0, (state.askCool || 0) - dt);
     const p = state.player;
-    const left = keys.ArrowLeft || keys.a || keys.A;
-    const right = keys.ArrowRight || keys.d || keys.D;
-    const jump = keys.ArrowUp || keys.w || keys.W || keys[" "];
+    const left = keys.ArrowLeft || keys.a || keys.A || pad.left;
+    const right = keys.ArrowRight || keys.d || keys.D || pad.right;
+    const jump = keys.ArrowUp || keys.w || keys.W || keys[" "] || pad.jump;
 
     const acc = 2400, max = 290, fric = 1800;
     if (left) { p.vx -= acc * dt; p.face = -1; }
@@ -663,10 +668,135 @@
     }
   }
 
+  function btnDown(buttons, i) {
+    const b = buttons[i];
+    return !!(b && (b.pressed || b.value > 0.55));
+  }
+  function hatVector(dir) {
+    let x = 0, y = 0;
+    if (typeof dir !== "number" || dir === 0 || dir > 1) return { x, y };
+    if ((dir >= -1 && dir < -0.7) || (dir >= 0.95 && dir <= 1)) y -= 1;
+    if (dir >= -0.75 && dir < -0.1) x += 1;
+    if (dir >= -0.2 && dir < 0.45) y += 1;
+    if (dir >= 0.4 && dir <= 1) x -= 1;
+    return { x, y };
+  }
+  function activePad() {
+    if (!navigator.getGamepads) return null;
+    const list = navigator.getGamepads();
+    let fallback = null;
+    for (let i = 0; i < list.length; i++) {
+      const gp = list[i];
+      if (!gp) continue;
+      const id = (gp.id || "").toLowerCase();
+      const f310 = id.includes("f310") || id.includes("logitech") || id.includes("046d") ||
+        id.includes("c216") || id.includes("c21d") ||
+        (gp.mapping === "standard" && (id.includes("xbox") || id.includes("xinput")));
+      if (f310) return gp;
+      if (!fallback) fallback = gp;
+    }
+    return fallback;
+  }
+  function readPad(gp) {
+    const buttons = gp.buttons || [];
+    const axes = gp.axes || [];
+    const standard = gp.mapping === "standard";
+    let x = 0;
+    let y = 0;
+    if (standard) {
+      if (btnDown(buttons, 14)) x -= 1;
+      if (btnDown(buttons, 15)) x += 1;
+      if (btnDown(buttons, 12)) y -= 1;
+      if (btnDown(buttons, 13)) y += 1;
+    } else {
+      const hat = hatVector(axes.length > 9 ? axes[9] : axes[axes.length - 1]);
+      x = hat.x;
+      y = hat.y;
+    }
+    const lx = axes[0] || 0;
+    const ly = axes[1] || 0;
+    if (!x && Math.abs(lx) > 0.32) x = lx;
+    if (!y && Math.abs(ly) > 0.45) y = ly;
+    return {
+      x, y,
+      a: btnDown(buttons, standard ? 0 : 1),
+      b: btnDown(buttons, standard ? 1 : 2),
+      xBtn: btnDown(buttons, standard ? 2 : 0),
+      yBtn: btnDown(buttons, 3),
+      start: btnDown(buttons, 9),
+      back: btnDown(buttons, 8),
+      rb: btnDown(buttons, 5),
+    };
+  }
+  function edge(name, down) {
+    const was = !!padPrev[name];
+    padPrev[name] = down;
+    return down && !was;
+  }
+  function typing() {
+    const t = document.activeElement;
+    return t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA");
+  }
+  function markPick() {
+    [...hud.qans.children].forEach((el, i) => el.classList.toggle("pick", i === state.qPick));
+  }
+  function clickAnswer(i) {
+    const btn = hud.qans.children[i];
+    if (btn) btn.click();
+  }
+  function pollPad(dt) {
+    const gp = activePad();
+    pad.left = false;
+    pad.right = false;
+    pad.jump = false;
+    if (!gp) return;
+    const st = readPad(gp);
+    pad.left = st.x < -0.32;
+    pad.right = st.x > 0.32;
+    pad.jump = st.a || st.y < -0.55;
+    const hit = {
+      a: edge("a", st.a),
+      b: edge("b", st.b),
+      x: edge("x", st.xBtn),
+      y: edge("y", st.yBtn),
+      start: edge("start", st.start),
+      back: edge("back", st.back),
+      rb: edge("rb", st.rb),
+    };
+    if (typing()) return;
+    if (state.asking) {
+      const n = hud.qans.children.length;
+      if (n && (st.y > 0.55 || st.y < -0.55)) {
+        qNav -= dt;
+        if (qNav <= 0) {
+          state.qPick = st.y > 0 ? Math.min(n - 1, (state.qPick || 0) + 1) : Math.max(0, (state.qPick || 0) - 1);
+          markPick();
+          qNav = 0.22;
+        }
+      } else qNav = 0;
+      if (hit.a) clickAnswer(state.qPick || 0);
+      else if (hit.b) clickAnswer(1);
+      else if (hit.x) clickAnswer(2);
+      else if (hit.y) clickAnswer(3);
+      return;
+    }
+    if (hit.start) {
+      if (state.mode === "menu") start();
+      else if (state.mode === "play") { state.mode = "pause"; hud.pause.classList.remove("hidden"); }
+      else if (state.mode === "pause") { state.mode = "play"; hud.pause.classList.add("hidden"); }
+    }
+    if (hit.back && state.mode === "play" && !state.asking) {
+      state.mode = "pause";
+      hud.pause.classList.remove("hidden");
+    }
+    if ((hit.y || hit.rb) && state.mode === "play" && !state.asking) openQ();
+  }
+
   let last = performance.now();
   function loop(now) {
     const dt = Math.min(0.033, (now - last) / 1000);
     last = now;
+    pollPad(dt);
     update(dt);
     draw();
     requestAnimationFrame(loop);
